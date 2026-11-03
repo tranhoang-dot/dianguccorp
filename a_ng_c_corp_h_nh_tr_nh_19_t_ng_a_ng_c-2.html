@@ -1,0 +1,3620 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ĐỊA NGỤC CORP - Hành Trình 19 Tầng Địa Ngục (MMORPG 2D)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #09050a;
+            color: #f8fafc;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 10, 20, 0.8);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #dc2626;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f97316;
+        }
+        /* Corporate Hell Glow Effects */
+        .hell-glass {
+            background: rgba(17, 10, 22, 0.88);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            box-shadow: 0 8px 32px rgba(220, 38, 38, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+        .hell-glass-gold {
+            background: rgba(24, 14, 10, 0.92);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(245, 158, 11, 0.45);
+            box-shadow: 0 10px 35px rgba(245, 158, 11, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        }
+        .btn-hell {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            border: 1px solid #f87171;
+            box-shadow: 0 4px 14px rgba(220, 38, 38, 0.4);
+            transition: all 0.18s ease;
+        }
+        .btn-hell:hover {
+            background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.6);
+        }
+        .btn-hell:active {
+            transform: translateY(1px);
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%);
+            border: 1px solid #fcd34d;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+            transition: all 0.18s ease;
+        }
+        .btn-gold:hover {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.55);
+        }
+        @keyframes pulse-border {
+            0%, 100% { border-color: rgba(239, 68, 68, 0.5); }
+            50% { border-color: rgba(251, 191, 36, 0.9); }
+        }
+        .animate-hell-border {
+            animation: pulse-border 2s infinite;
+        }
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .ticker-track {
+            display: flex;
+            width: max-content;
+            animation: ticker 38s linear infinite;
+        }
+        .ticker-track:hover {
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+<body class="relative w-screen h-screen overflow-hidden select-none">
+
+    <!-- MAIN 2D GAME CANVAS -->
+    <canvas id="gameCanvas" class="w-full h-full cursor-crosshair"></canvas>
+
+    <!-- TOP CORPORATE HEADER & TICKER BAR -->
+    <header class="fixed top-0 left-0 right-0 z-20 pointer-events-none flex flex-col">
+        <!-- Corporate Slogan Ticker -->
+        <div class="w-full bg-gradient-to-r from-red-950 via-stone-950 to-red-950 border-b border-red-500/40 py-1 overflow-hidden pointer-events-auto">
+            <div class="ticker-track text-xs font-semibold tracking-wide text-amber-300/90 space-x-10 px-4">
+                <span><i class="fa-solid fa-fire-flame-curved text-red-500 mr-1.5"></i><strong>ĐỊA NGỤC CORP:</strong> Hệ sinh thái hậu nhân sinh hàng đầu — "CHẾT LÀ CÒN!"</span>
+                <span><i class="fa-solid fa-briefcase text-amber-400 mr-1.5"></i>Slogan: "Sự nghiệp của bạn là sự nghiệp của chúng tôi" | Vốn điều lệ đầu thai: <strong>666 TỶ NGƯỜI</strong></span>
+                <span><i class="fa-solid fa-chart-line text-emerald-400 mr-1.5"></i>Đơn vị đo lường chuẩn ISO-Âm Phủ: <strong>ĐỚN</strong> & <strong>DPM (Đớn Per Minute)</strong> — Roi da: 20 Đớn | Vạc dầu: 1.000.000 Đớn</span>
+                <span><i class="fa-solid fa-scale-balanced text-purple-400 mr-1.5"></i>Ban Pháp Chế Phán Quan: <strong>"ĐÃ PHÁN LÀ KHÔNG CÓ OAN!"</strong> — Tầng 19 mới khai trương chuyên trị Khẩu Nghiệp & Nói Xấu Sau Lưng!</span>
+                <span><i class="fa-solid fa-mug-hot text-cyan-400 mr-1.5"></i>Ban Format Mạnh Bà: <strong>"Format thẻ nhớ rồi mình thở nhé — Nhớ chết liền!"</strong></span>
+                <!-- Duplicate for seamless loop -->
+                <span><i class="fa-solid fa-fire-flame-curved text-red-500 mr-1.5"></i><strong>ĐỊA NGỤC CORP:</strong> Hệ sinh thái hậu nhân sinh hàng đầu — "CHẾT LÀ CÒN!"</span>
+                <span><i class="fa-solid fa-briefcase text-amber-400 mr-1.5"></i>Slogan: "Sự nghiệp của bạn là sự nghiệp của chúng tôi" | Vốn điều lệ đầu thai: <strong>666 TỶ NGƯỜI</strong></span>
+                <span><i class="fa-solid fa-chart-line text-emerald-400 mr-1.5"></i>Đơn vị đo lường chuẩn ISO-Âm Phủ: <strong>ĐỚN</strong> & <strong>DPM (Đớn Per Minute)</strong> — Roi da: 20 Đớn | Vạc dầu: 1.000.000 Đớn</span>
+            </div>
+        </div>
+
+        <!-- Live Broadcast Decree Banner from Diêm Vương (Synced across Room) -->
+        <div id="liveBroadcastBanner" class="hidden w-full bg-gradient-to-r from-amber-600 via-red-700 to-purple-900 border-b-2 border-amber-300 px-4 py-1.5 shadow-2xl pointer-events-auto items-center justify-between gap-3 animate-pulse">
+            <div class="flex items-center gap-2.5 text-xs sm:text-sm font-black text-white overflow-hidden">
+                <span class="bg-black/60 text-amber-300 px-2 py-0.5 rounded-md border border-amber-400 flex items-center gap-1 shrink-0">
+                    <i class="fa-solid fa-bullhorn text-red-400 animate-bounce"></i> SẮC LỆNH DIÊM VƯƠNG
+                </span>
+                <span id="liveBroadcastText" class="truncate text-amber-100">Tất cả tội nhân tập trung chạy KPI Đớn!</span>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+                <span id="x3EventBadge" class="hidden bg-amber-400 text-black text-[11px] font-black px-2.5 py-0.5 rounded-full shadow">
+                    🔥 X3 KPI ĐỚN: <span id="x3TimerText">60s</span>
+                </span>
+                <button onclick="dismissBroadcastBanner()" class="text-white/80 hover:text-white text-xs px-1.5">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main HUD Row -->
+        <div class="p-2 sm:p-3 flex flex-wrap items-start justify-between gap-2">
+            <!-- Left: Player Profile, Karma, Đớn & DPM -->
+            <div class="hell-glass rounded-2xl p-2.5 sm:p-3 pointer-events-auto flex flex-col sm:flex-row items-start sm:items-center gap-3 max-w-full">
+                <div class="flex items-center gap-2.5">
+                    <div class="relative w-11 h-11 rounded-xl bg-gradient-to-br from-red-600 to-amber-700 flex items-center justify-center border border-amber-300 shadow-lg">
+                        <i class="fa-solid fa-id-badge text-xl text-white"></i>
+                        <span id="hudFloorBadge" class="absolute -bottom-1.5 -right-1.5 bg-amber-500 text-black text-[10px] font-black px-1.5 py-0.5 rounded-md border border-black">SẢNH</span>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-1.5">
+                            <span id="hudPlayerName" class="font-bold text-sm sm:text-base text-white">Tội Nhân Mới</span>
+                            <button onclick="openProfileModal()" class="text-xs text-amber-400 hover:text-amber-200 px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/30" title="Đổi tên & ngoại hình">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                        </div>
+                        <div id="hudTitleBadge" class="text-[11px] text-amber-300 font-medium">Thực Tập Sinh Chịu Phạt</div>
+                    </div>
+                </div>
+
+                <!-- KPI Metrics -->
+                <div class="grid grid-cols-4 gap-1.5 sm:gap-2 text-center border-t sm:border-t-0 sm:border-l border-red-500/30 pt-2 sm:pt-0 sm:pl-3 w-full sm:w-auto">
+                    <div class="bg-black/45 px-2 py-1 rounded-lg border border-red-500/30">
+                        <div class="text-[10px] text-red-300 uppercase font-semibold">Tổng ĐỚN</div>
+                        <div id="hudTotalDon" class="text-xs sm:text-sm font-black text-red-400">0</div>
+                    </div>
+                    <div class="bg-black/45 px-2 py-1 rounded-lg border border-orange-500/30">
+                        <div class="text-[10px] text-orange-300 uppercase font-semibold">KPI DPM</div>
+                        <div id="hudDPM" class="text-xs sm:text-sm font-black text-orange-400">0/ph</div>
+                    </div>
+                    <div class="bg-black/45 px-2 py-1 rounded-lg border border-purple-500/30">
+                        <div class="text-[10px] text-purple-300 uppercase font-semibold">Nghiệp</div>
+                        <div id="hudKarma" class="text-xs sm:text-sm font-black text-purple-400">120</div>
+                    </div>
+                    <div class="bg-black/45 px-2 py-1 rounded-lg border border-amber-500/30">
+                        <div class="text-[10px] text-amber-300 uppercase font-semibold">Xu Âm Phủ</div>
+                        <div id="hudCoins" class="text-xs sm:text-sm font-black text-amber-400">500</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center: Current Zone Banner -->
+            <div class="hell-glass-gold rounded-2xl px-4 py-2 pointer-events-auto hidden lg:flex flex-col items-center text-center max-w-md animate-hell-border">
+                <div class="flex items-center gap-2">
+                    <span class="text-[11px] uppercase tracking-widest px-2 py-0.5 rounded bg-red-600/80 text-white font-bold" id="zoneTag">KHU CHECK-IN</span>
+                    <h1 id="zoneName" class="text-base font-black text-amber-300">SẢNH NGHIỆT KÍNH ĐÀI - ĐỊA NGỤC CORP</h1>
+                </div>
+                <p id="zoneDesc" class="text-xs text-stone-300 mt-0.5 line-clamp-1">Quét QR Sổ Sinh Tử, kiểm tra KPI Nghiệp Chướng trước khi phân bổ xuống 19 tầng.</p>
+            </div>
+
+            <!-- Right: Multiplayer Crowd Control (400-500 Players) & Quick Actions -->
+            <div class="hell-glass rounded-2xl p-2.5 pointer-events-auto flex flex-col gap-2 items-end">
+                <div class="flex items-center gap-1.5 flex-wrap justify-end">
+                    <!-- Room Code Button -->
+                    <button onclick="openRoomModal()" class="bg-purple-950/90 hover:bg-purple-900 border border-purple-400/50 px-2.5 py-1 rounded-xl flex items-center gap-1.5 text-xs font-black text-purple-200 transition shadow" title="Đổi Mã Phòng & Mời bạn bè">
+                        <i class="fa-solid fa-door-open text-amber-400"></i>
+                        <span>Phòng: <strong id="hudRoomCode" class="text-amber-300">PUBLIC-666</strong></span>
+                        <span id="hudRealRoomCount" class="bg-purple-600 text-white text-[10px] px-1.5 py-0.2 rounded-full">1</span>
+                    </button>
+
+                    <div class="flex items-center gap-1.5 bg-emerald-950/80 border border-emerald-500/40 px-2.5 py-1 rounded-xl">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span class="text-xs font-bold text-emerald-300"><span id="onlineCountDisplay">450</span> Linh Hồn</span>
+                    </div>
+                    <button onclick="summonCrowdHere()" class="btn-gold text-black font-bold text-xs px-2.5 py-1.5 rounded-xl flex items-center gap-1" title="Triệu tập đám đông tội nhân về tầng hiện tại">
+                        <i class="fa-solid fa-users-rays"></i> Tập Trung Đông
+                    </button>
+                    <button onclick="toggleSound()" id="soundBtn" class="bg-stone-800 hover:bg-stone-700 text-amber-300 border border-amber-500/30 w-8 h-8 rounded-xl flex items-center justify-center text-sm" title="Bật/Tắt Âm Thanh">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                </div>
+
+                <!-- Crowd Slider (100 - 500 Players) -->
+                <div class="flex items-center gap-2 text-[11px] text-stone-300 bg-black/40 px-2.5 py-1 rounded-lg border border-white/10 w-full justify-between">
+                    <span>Quy mô Server:</span>
+                    <input id="crowdSlider" type="range" min="100" max="500" step="25" value="450" oninput="updateCrowdCount(this.value)" class="w-24 accent-red-500 cursor-pointer">
+                    <span id="crowdSliderLabel" class="font-bold text-amber-400">450 người</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- LEFT SIDEBAR: QUICK NAVIGATION & PASSPORT PROGRESS -->
+    <aside class="fixed left-2 sm:left-3 top-36 sm:top-32 z-20 flex flex-col gap-2 pointer-events-none">
+        <button onclick="openRoomModal()" class="hell-glass-gold hover:border-amber-300 text-amber-300 font-black text-xs sm:text-sm px-3.5 py-2 rounded-2xl pointer-events-auto flex items-center gap-2 shadow-xl transition">
+            <i class="fa-solid fa-user-group text-amber-400 text-base"></i>
+            <div class="text-left">
+                <div class="leading-none">Mã Phòng & Mời Bạn</div>
+                <div class="text-[10px] text-stone-300 font-normal mt-0.5">Gom nhóm & Dịch chuyển</div>
+            </div>
+        </button>
+
+        <button onclick="openDiemVuongModal()" class="bg-gradient-to-r from-purple-900 to-red-900 hover:from-purple-800 hover:to-red-800 border border-amber-400/60 text-white font-black text-xs sm:text-sm px-3.5 py-2 rounded-2xl pointer-events-auto flex items-center gap-2 shadow-xl transition">
+            <i class="fa-solid fa-bullhorn text-amber-300 text-base"></i>
+            <div class="text-left">
+                <div class="leading-none">Lệnh Diêm Vương (Host)</div>
+                <div class="text-[10px] text-amber-200 font-normal mt-0.5">Phát loa & Sự kiện X3 Đớn</div>
+            </div>
+        </button>
+
+        <button onclick="openElevatorModal()" class="btn-hell text-white font-bold text-xs sm:text-sm px-3.5 py-2.5 rounded-2xl pointer-events-auto flex items-center gap-2 shadow-xl">
+            <i class="fa-solid fa-elevator text-amber-300 text-base"></i>
+            <div class="text-left">
+                <div class="leading-none">Thang Máy 19 Tầng</div>
+                <div class="text-[10px] text-amber-200 font-normal mt-0.5">Dịch chuyển nhanh</div>
+            </div>
+        </button>
+
+        <button onclick="openPhanQuanModal()" class="btn-gold text-stone-950 font-black text-xs sm:text-sm px-3.5 py-2.5 rounded-2xl pointer-events-auto flex items-center gap-2 shadow-xl">
+            <i class="fa-solid fa-gavel text-red-900 text-base"></i>
+            <div class="text-left">
+                <div class="leading-none">Tầng 19: Phán Quan AI</div>
+                <div class="text-[10px] text-stone-900 font-semibold mt-0.5">Xét xử Khẩu Nghiệp</div>
+            </div>
+        </button>
+
+        <button onclick="openVangMaModal()" class="hell-glass hover:border-amber-400 text-amber-300 font-bold text-xs sm:text-sm px-3.5 py-2 rounded-2xl pointer-events-auto flex items-center gap-2 transition">
+            <i class="fa-solid fa-fire text-orange-400 text-base"></i>
+            <div class="text-left">
+                <div class="leading-none">Kho Vàng Mã</div>
+                <div class="text-[10px] text-stone-400 font-normal mt-0.5">Đốt SH, iPhone, Biệt thự</div>
+            </div>
+        </button>
+
+        <button onclick="openPassportModal()" class="hell-glass hover:border-red-400 text-white font-bold text-xs sm:text-sm px-3.5 py-2 rounded-2xl pointer-events-auto flex items-center gap-2 transition">
+            <i class="fa-solid fa-passport text-red-400 text-base"></i>
+            <div class="text-left">
+                <div class="leading-none">Sổ Sinh Tử (<span id="passportCount">0</span>/19)</div>
+                <div class="text-[10px] text-stone-400 font-normal mt-0.5">Chứng nhận vượt ngục</div>
+            </div>
+        </button>
+
+        <button onclick="openStandupLoreModal()" class="hell-glass hover:border-purple-400 text-purple-300 font-bold text-xs sm:text-sm px-3.5 py-2 rounded-2xl pointer-events-auto flex items-center gap-2 transition">
+            <i class="fa-solid fa-building-user text-purple-400 text-base"></i>
+            <div class="text-left">
+                <div class="leading-none">Cẩm Nang Địa Ngục Corp</div>
+                <div class="text-[10px] text-stone-400 font-normal mt-0.5">Sơ đồ nhân sự & Câu đố</div>
+            </div>
+        </button>
+    </aside>
+
+    <!-- RIGHT SIDEBAR: MINIMAP RADAR (400-500 PLAYERS) & LIVE HELL CHAT -->
+    <aside class="fixed right-2 sm:right-3 top-36 sm:top-32 z-20 flex flex-col gap-2 w-56 sm:w-64 pointer-events-none">
+        <!-- Minimap Radar -->
+        <div class="hell-glass rounded-2xl p-2.5 pointer-events-auto">
+            <div class="flex items-center justify-between text-[11px] font-bold text-amber-300 mb-1.5">
+                <span><i class="fa-solid fa-satellite-dish text-red-500 mr-1"></i>RADAR 19 TẦNG</span>
+                <span id="radarFloorText" class="text-stone-400">Tầng 0/19</span>
+            </div>
+            <canvas id="minimapCanvas" width="230" height="120" class="w-full h-28 rounded-xl bg-black/80 border border-red-500/30 cursor-pointer" title="Click trên Radar để đi tới khu vực"></canvas>
+            <div class="flex justify-between text-[10px] text-stone-400 mt-1">
+                <span><span class="inline-block w-2 h-2 rounded-full bg-amber-400 mr-1"></span>Bạn</span>
+                <span><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-1"></span>NPC Corp</span>
+                <span><span class="inline-block w-2 h-2 rounded-full bg-red-500 mr-1"></span>Tội nhân</span>
+            </div>
+        </div>
+
+        <!-- Live Chat Box -->
+        <div class="hell-glass rounded-2xl p-2.5 pointer-events-auto hidden sm:flex flex-col h-52">
+            <div class="flex items-center justify-between text-[11px] font-bold text-amber-300 mb-1">
+                <span><i class="fa-solid fa-comments text-amber-400 mr-1"></i>KÊNH CHAT ÂM PHỦ</span>
+                <span class="text-[10px] text-emerald-400">Trực tuyến</span>
+            </div>
+            <div id="chatMessages" class="flex-1 overflow-y-auto space-y-1.5 pr-1 text-[11px]"></div>
+            <form onsubmit="sendPlayerChat(event)" class="mt-2 flex gap-1">
+                <input id="chatInput" type="text" maxlength="80" placeholder="Tám chuyện âm phủ..." class="flex-1 bg-black/60 border border-red-500/40 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-amber-400">
+                <button type="submit" class="btn-hell px-2.5 py-1 rounded-lg text-xs text-white font-bold">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- BOTTOM CONTEXT ACTION BAR & CONTROLS -->
+    <div class="fixed bottom-3 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 w-full max-w-2xl px-3 pointer-events-none">
+        <!-- Context Interaction Prompt -->
+        <div id="interactionBanner" class="hell-glass-gold px-4 py-2 rounded-2xl pointer-events-auto flex items-center gap-3 shadow-2xl transition-all duration-200">
+            <div class="w-9 h-9 rounded-xl bg-red-600/90 flex items-center justify-center text-white font-black text-base shadow">
+                <i id="interactIcon" class="fa-solid fa-bolt"></i>
+            </div>
+            <div class="text-left">
+                <div id="interactTitle" class="text-xs sm:text-sm font-black text-amber-300">Sảnh Nghiệt Kính Đài</div>
+                <div id="interactSubtitle" class="text-[11px] text-stone-300">Di chuyển bằng WASD / Mũi tên / Click chuột trên sàn để đi lại</div>
+            </div>
+            <div class="flex items-center gap-1.5 ml-2">
+                <button id="primaryActionBtn" onclick="triggerZonePunishment()" class="btn-hell text-white text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 whitespace-nowrap">
+                    <i class="fa-solid fa-fire-burner"></i> <span>Trải Nghiệm Hình Phạt (Phím E)</span>
+                </button>
+                <button id="npcTalkBtn" onclick="talkToNearestNPC()" class="btn-gold text-black text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 whitespace-nowrap">
+                    <i class="fa-solid fa-user-tie"></i> <span>Gặp Nhân Sự NPC (Phím F)</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Floor Quick Stepper Bar -->
+        <div class="hell-glass px-3 py-1.5 rounded-full pointer-events-auto flex items-center gap-2 text-xs">
+            <button onclick="stepZone(-1)" class="hover:text-amber-300 px-2 py-0.5 rounded-full bg-white/5 hover:bg-white/10 font-bold">
+                <i class="fa-solid fa-chevron-left mr-1"></i>Tầng Trước
+            </button>
+            <span class="text-stone-400">|</span>
+            <span id="bottomFloorStatus" class="font-bold text-amber-300 px-2">Đang ở: Khu Check-in Nghiệt Kính Đài</span>
+            <span class="text-stone-400">|</span>
+            <button onclick="stepZone(1)" class="hover:text-amber-300 px-2 py-0.5 rounded-full bg-white/5 hover:bg-white/10 font-bold">
+                Tầng Tiếp Theo<i class="fa-solid fa-chevron-right ml-1"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toastContainer" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 pointer-events-none"></div>
+
+    <!-- ======================================================================= -->
+    <!-- MODAL 1: THANG MÁY CHUYỂN KIẾP ĐỊA NGỤC CORP (ALL 19 FLOORS + CHECKIN + MẠNH BÀ) -->
+    <!-- ======================================================================= -->
+    <div id="elevatorModal" class="fixed inset-0 z-40 bg-black/80 backdrop-blur-md hidden items-center justify-center p-3 sm:p-6">
+        <div class="hell-glass-gold rounded-3xl max-w-5xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+            <div class="p-4 sm:p-5 border-b border-amber-500/30 flex items-center justify-between bg-gradient-to-r from-red-950/90 via-stone-900 to-red-950/90">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-amber-500 text-black flex items-center justify-center text-xl font-black">
+                        <i class="fa-solid fa-elevator"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-black text-amber-300">THANG MÁY CHUYỂN KIẾP — ĐỊA NGỤC CORP</h2>
+                        <p class="text-xs text-stone-300">Chọn bất kỳ tầng nào trong 19 Tầng Địa Ngục để tham quan, xem 450+ tội nhân chịu phạt & thực hiện KPI Đớn</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('elevatorModal')" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-red-600 text-white flex items-center justify-center">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div id="elevatorGrid" class="p-4 sm:p-5 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <!-- Populated dynamically with all 21 zones -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- MODAL 2: MINI-GAME CHỊU PHẠT & TRẢI NGHIỆM ĐỚN TẠI TỪNG TẦNG -->
+    <!-- ======================================================================= -->
+    <div id="punishmentModal" class="fixed inset-0 z-40 bg-black/85 backdrop-blur-md hidden items-center justify-center p-3 sm:p-6">
+        <div class="hell-glass rounded-3xl max-w-2xl w-full overflow-hidden border-2 border-red-500/60 shadow-2xl">
+            <div class="p-4 sm:p-5 bg-gradient-to-r from-red-900/90 to-stone-900 border-b border-red-500/40 flex items-center justify-between">
+                <div>
+                    <span id="punishFloorBadge" class="text-[11px] font-black uppercase px-2.5 py-0.5 rounded bg-amber-400 text-black">TẦNG 1</span>
+                    <h3 id="punishTitle" class="text-lg sm:text-xl font-black text-white mt-1">BẠT THIỆT ĐỊA NGỤC (NGỤC KÉO LƯỠI)</h3>
+                </div>
+                <button onclick="closeModal('punishmentModal')" class="w-9 h-9 rounded-xl bg-black/40 hover:bg-red-600 text-white flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-4 sm:p-6 space-y-4">
+                <!-- Lore & Real Sin Description -->
+                <div class="bg-black/50 border border-red-500/30 rounded-2xl p-3.5 text-xs sm:text-sm space-y-1.5">
+                    <div class="text-amber-300 font-bold"><i class="fa-solid fa-scroll mr-1.5"></i>Hồ Sơ Tội Trạng Thực Tế:</div>
+                    <p id="punishSinDesc" class="text-stone-200 leading-relaxed"></p>
+                    <div class="pt-2 flex flex-wrap gap-2 text-xs">
+                        <span class="bg-red-950/90 border border-red-500/40 px-2.5 py-1 rounded-lg text-red-300 font-bold">
+                            <i class="fa-solid fa-fire-flame-Simple mr-1"></i>Định mức: <span id="punishDonRate">5,000 ĐỚN / nhịp</span>
+                        </span>
+                        <span class="bg-amber-950/90 border border-amber-500/40 px-2.5 py-1 rounded-lg text-amber-300 font-bold">
+                            <i class="fa-solid fa-user-Astronaut mr-1"></i>Cán bộ phụ trách: <span id="punishOfficer">Ngục Tốt Thực Thi</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Interactive Torture Chamber Mini-Canvas -->
+                <div class="relative rounded-2xl overflow-hidden border border-amber-500/40 bg-stone-950">
+                    <canvas id="miniTortureCanvas" width="600" height="220" class="w-full h-48 sm:h-52"></canvas>
+                    <div class="absolute top-2.5 right-2.5 bg-black/75 px-3 py-1 rounded-xl border border-red-500/40 text-xs font-bold text-red-400">
+                        KPI Tiến độ: <span id="miniProgressText">0%</span>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-stone-900 h-4 rounded-full overflow-hidden border border-red-500/40 p-0.5">
+                    <div id="miniProgressBar" class="bg-gradient-to-r from-amber-500 via-red-500 to-purple-600 h-full rounded-full transition-all duration-150" style="width: 0%"></div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
+                    <div class="text-xs text-stone-300">
+                        Nhấp liên tục hoặc nhấn phím <kbd class="px-2 py-0.5 bg-stone-800 rounded border border-stone-600 text-amber-300 font-bold">SPACE</kbd> để chịu đủ KPI Đớn & đóng dấu thông hành!
+                    </div>
+                    <button id="endureClickBtn" onclick="stepMiniTorture()" class="btn-hell w-full sm:w-auto px-6 py-3 rounded-2xl text-white font-black text-sm flex items-center justify-center gap-2 shadow-xl active:scale-95">
+                        <i class="fa-solid fa-hand-fist text-amber-300"></i> CHỊU ĐỚN NGAY (+KPI)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- MODAL 3: TẦNG 19 ĐẶC BIỆT - PHÁN QUAN NPC (BAN PHÁP CHẾ) & XÉT XỬ KHẨU NGHIỆP -->
+    <!-- ======================================================================= -->
+    <div id="phanQuanModal" class="fixed inset-0 z-40 bg-black/85 backdrop-blur-md hidden items-center justify-center p-3 sm:p-6">
+        <div class="hell-glass-gold rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden">
+            <!-- Header -->
+            <div class="p-4 sm:p-5 bg-gradient-to-r from-purple-950 via-red-950 to-stone-950 border-b border-amber-500/40 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-red-600 text-black flex items-center justify-center text-2xl font-black shadow-lg">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-red-600 text-white">TẦNG 19 ĐẶC BIỆT</span>
+                            <span class="text-xs text-amber-300 font-bold">Ban Pháp Chế Địa Ngục Corp • phanquan@dianguccorp.com</span>
+                        </div>
+                        <h2 class="text-lg sm:text-xl font-black text-white">PHÁN QUAN TỐI CAO — XÉT XỬ KHẨU NGHIỆP & NÓI XẤU</h2>
+                    </div>
+                </div>
+                <button onclick="closeModal('phanQuanModal')" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-red-600 text-white flex items-center justify-center">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Content Body -->
+            <div class="p-4 sm:p-6 overflow-y-auto space-y-5">
+                <!-- Phán Quan Quote Banner -->
+                <div class="bg-black/60 border border-amber-500/40 rounded-2xl p-4 flex flex-col sm:flex-row items-center gap-4">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-b from-purple-700 to-stone-900 border-2 border-amber-400 flex items-center justify-center shrink-0 text-3xl">
+                        ⚖️
+                    </div>
+                    <div class="space-y-1 text-center sm:text-left">
+                        <div class="text-xs font-bold text-amber-400 uppercase tracking-wider">PHÁN QUAN (Chief Legal Counselor) — Triết lý hoạt động: "Đã phán là không có oan!"</div>
+                        <p id="phanQuanSpeech" class="text-sm text-stone-100 italic">
+                            "Chào mừng xuống Tầng 19! 18 tầng kia xử tội truyền thống rồi, còn Tầng 19 này do Địa Ngục Corp mới xây thêm để chuyên trị: Nói xấu sau lưng nơi công sở, tạo group chat nói xấu sếp, cào phím toxic trên mạng, cười cợt khiếm nhã lúc check-in! Ngươi muốn Tự Thú hay làm Bài Test Nghiệp?"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Two Tabs: 1. Khai Báo / Tự Thú Khẩu Nghiệp (AI Phán Quan) | 2. Bài Test Nghiệp & Câu Đố Minh Ti -->
+                <div class="flex gap-2 border-b border-white/10 pb-2">
+                    <button id="tabBtnConfess" onclick="switchPhanQuanTab('confess')" class="btn-gold text-black font-black text-xs sm:text-sm px-4 py-2 rounded-xl flex items-center gap-2">
+                        <i class="fa-solid fa-microphone-lines"></i> 1. Tự Thú Khẩu Nghiệp (Phán Quan AI Phán Án)
+                    </button>
+                    <button id="tabBtnQuiz" onclick="switchPhanQuanTab('quiz')" class="bg-stone-800 hover:bg-stone-700 text-stone-200 font-bold text-xs sm:text-sm px-4 py-2 rounded-xl flex items-center gap-2">
+                        <i class="fa-solid fa-clipboard-question"></i> 2. Bài Test Nghiệp Chướng (4 Câu Thẩm Vấn)
+                    </button>
+                </div>
+
+                <!-- TAB 1: TỰ THÚ KHẨU NGHIỆP VỚI PHÁN QUAN AI -->
+                <div id="phanQuanTabConfess" class="space-y-4">
+                    <div class="space-y-2">
+                        <label class="text-xs sm:text-sm font-bold text-amber-300 block">
+                            Nhập lời thú tội hoặc thói xấu lúc còn trên dương gian (hoặc chọn mẫu bên dưới):
+                        </label>
+                        <!-- Quick Sample Presets -->
+                        <div class="flex flex-wrap gap-1.5">
+                            <button onclick="setConfessionSample('Hay lập group Zalo không có sếp để nói xấu sếp và đồng nghiệp mỗi giờ nghỉ trưa.')" class="text-[11px] bg-red-950/70 hover:bg-red-900 border border-red-500/40 text-red-200 px-2.5 py-1 rounded-lg">
+                                + Lập group chat nói xấu sếp
+                            </button>
+                            <button onclick="setConfessionSample('Hay dùng nick ảo lên mạng chê bai, cào phím phán xét drama dù chưa biết thực hư.')" class="text-[11px] bg-red-950/70 hover:bg-red-900 border border-red-500/40 text-red-200 px-2.5 py-1 rounded-lg">
+                                + Anh hùng bàn phím toxic
+                            </button>
+                            <button onclick="setConfessionSample('Mượn tiền bạn bè xong im lặng, lúc bạn đòi thì thái độ và đi kể xấu bạn keo kiệt.')" class="text-[11px] bg-red-950/70 hover:bg-red-900 border border-red-500/40 text-red-200 px-2.5 py-1 rounded-lg">
+                                + Quỵt nợ còn nói xấu bạn
+                            </button>
+                            <button onclick="setConfessionSample('Nghe câu đố của Địa Ngục Corp xong lỡ miệng cười ha hả trước mặt Phán Quan.')" class="text-[11px] bg-red-950/70 hover:bg-red-900 border border-red-500/40 text-red-200 px-2.5 py-1 rounded-lg">
+                                + Cười câu đố cổng Địa Ngục Corp
+                            </button>
+                            <button onclick="setConfessionSample('Hay hứa hôm nay đi ngủ sớm, ăn kiêng nhưng đêm nào cũng trà sữa và lướt tóp tóp tới 3h sáng.')" class="text-[11px] bg-red-950/70 hover:bg-red-900 border border-red-500/40 text-red-200 px-2.5 py-1 rounded-lg">
+                                + Tự lừa dối bản thân lúc 2h sáng
+                            </button>
+                        </div>
+
+                        <textarea id="confessionInput" rows="3" placeholder="Ví dụ: Con hay nói xấu đồng nghiệp sau lưng, hay hứa trả bài đúng deadline nhưng toàn trễ..." class="w-full bg-black/70 border border-amber-500/40 rounded-2xl p-3 text-sm text-white focus:outline-none focus:border-amber-400"></textarea>
+
+                        <div class="flex justify-end">
+                            <button id="judgeConfessBtn" onclick="submitConfessionToPhanQuan()" class="btn-hell px-5 py-2.5 rounded-xl text-white font-black text-xs sm:text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-gavel"></i> TRA CỨU SỔ SINH TỬ & TUYÊN ÁN TẦNG 19
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Verdict Result Card -->
+                    <div id="verdictCard" class="hidden bg-gradient-to-br from-red-950/90 via-stone-900 to-purple-950/90 border-2 border-amber-400 rounded-2xl p-4 space-y-3">
+                        <div class="flex items-center justify-between border-b border-amber-500/30 pb-2">
+                            <div class="font-black text-amber-300 text-sm sm:text-base flex items-center gap-2">
+                                <i class="fa-solid fa-stamp text-red-500"></i> BẢN ÁN CHÍNH THỨC — BAN PHÁP CHẾ TẦNG 19
+                            </div>
+                            <span id="verdictCrimeLevel" class="bg-red-600 text-white text-xs font-black px-2.5 py-0.5 rounded-full">KHẨU NGHIỆP CẤP S</span>
+                        </div>
+                        <p id="verdictAnalysis" class="text-xs sm:text-sm text-stone-100 leading-relaxed"></p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+                            <div class="bg-black/50 p-2.5 rounded-xl border border-red-500/30">
+                                <div class="text-[10px] text-stone-400 uppercase">Hình phạt Tầng 19</div>
+                                <div id="verdictPunishment" class="text-xs font-bold text-red-300 mt-0.5">Gõ Bàn Phím Gai Sắt</div>
+                            </div>
+                            <div class="bg-black/50 p-2.5 rounded-xl border border-amber-500/30">
+                                <div class="text-[10px] text-stone-400 uppercase">Án Phạt ĐỚN</div>
+                                <div id="verdictDonAmount" class="text-xs font-black text-amber-400 mt-0.5">+50,000 ĐỚN</div>
+                            </div>
+                            <div class="bg-black/50 p-2.5 rounded-xl border border-purple-500/30">
+                                <div class="text-[10px] text-stone-400 uppercase">Điểm Nghiệp Chướng</div>
+                                <div id="verdictKarmaDelta" class="text-xs font-black text-purple-300 mt-0.5">Đã khấu trừ -40 Nghiệp</div>
+                            </div>
+                        </div>
+                        <div class="flex justify-end gap-2 pt-2">
+                            <button onclick="executeFloor19Sentence()" class="btn-gold text-black font-black text-xs px-4 py-2 rounded-xl flex items-center gap-1.5">
+                                <i class="fa-solid fa-bolt"></i> Chấp Hành Án Tại Tầng 19 Ngay
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: BÀI TEST NGHIỆP & CÂU ĐỐ ĐỊA NGỤC CORP -->
+                <div id="phanQuanTabQuiz" class="hidden space-y-4">
+                    <div id="quizContainer" class="space-y-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- MODAL 4: KHO VÀNG MÃ (PAPER ASSET PROCESSING EXECUTIVE) -->
+    <!-- ======================================================================= -->
+    <div id="vangMaModal" class="fixed inset-0 z-40 bg-black/80 backdrop-blur-md hidden items-center justify-center p-3 sm:p-6">
+        <div class="hell-glass-gold rounded-3xl max-w-3xl w-full max-h-[88vh] flex flex-col overflow-hidden">
+            <div class="p-4 sm:p-5 border-b border-amber-500/30 flex items-center justify-between bg-gradient-to-r from-amber-950/80 to-stone-900">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-orange-500 text-black flex items-center justify-center text-xl font-black">
+                        <i class="fa-solid fa-fire"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-black text-amber-300">TRUNG TÂM KIỂM KÊ & ĐỐT VÀNG MÃ (PAPER ASSET DEPT)</h2>
+                        <p class="text-xs text-stone-300">"Dương gian đốt gì, Địa Ngục Corp giải ngân cái đó!" — Giảm sát thương Đớn & tăng tốc độ chạy</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('vangMaModal')" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-red-600 text-white flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="vangMaGrid" class="p-4 sm:p-5 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+        </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- MODAL 5: SỔ SINH TỬ & CHỨNG NHẬN VƯỢT 19 TẦNG + CANH MẠNH BÀ -->
+    <!-- ======================================================================= -->
+    <div id="passportModal" class="fixed inset-0 z-40 bg-black/80 backdrop-blur-md hidden items-center justify-center p-3 sm:p-6">
+        <div class="hell-glass rounded-3xl max-w-4xl w-full max-h-[88vh] flex flex-col overflow-hidden">
+            <div class="p-4 sm:p-5 border-b border-red-500/30 flex items-center justify-between bg-gradient-to-r from-red-950 to-stone-900">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-red-600 text-white flex items-center justify-center text-xl font-black">
+                        <i class="fa-solid fa-book-skull"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-black text-white">SỔ SINH TỬ DATA — TIẾN ĐỘ HÀNH TRÌNH 19 TẦNG</h2>
+                        <p class="text-xs text-stone-300">Hoàn thành trải nghiệm chịu phạt tại các tầng để nhận dấu mộc đỏ của Thập Điện Diêm Vương</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('passportModal')" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-red-600 text-white flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-4 sm:p-5 overflow-y-auto space-y-4">
+                <div id="passportGrid" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-2.5"></div>
+                <div class="bg-gradient-to-r from-cyan-950/90 to-purple-950/90 border border-cyan-400/40 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div>
+                        <div class="text-sm font-black text-cyan-300"><i class="fa-solid fa-bowl-food mr-1.5"></i>TRẠM CUỐI: BAN FORMAT MẠNH BÀ</div>
+                        <p class="text-xs text-stone-300 mt-0.5">"Format thẻ nhớ rồi mình thở nhé — Nhớ chết liền!" Uống canh Mạnh Bà để xóa sạch Nghiệp Chướng và Đầu Thai VIP!</p>
+                    </div>
+                    <button onclick="drinkManhBaSoup()" class="btn-gold text-black font-black text-xs px-4 py-2.5 rounded-xl shrink-0">
+                        🥣 Uống Canh Mạnh Bà (Reset Ký Ức)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- MODAL 6: CẨM NANG ĐỊA NGỤC CORP & SƠ ĐỒ NHÂN SỰ (STANDUP LORE) -->
+    <!-- ======================================================================= -->
+    <div id="standupLoreModal" class="fixed inset-0 z-40 bg-black/80 backdrop-blur-md hidden items-center justify-center p-3 sm:p-6">
+        <div class="hell-glass-gold rounded-3xl max-w-4xl w-full max-h-[88vh] flex flex-col overflow-hidden">
+            <div class="p-4 sm:p-5 border-b border-amber-500/30 flex items-center justify-between bg-gradient-to-r from-purple-950 to-stone-900">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-purple-600 text-white flex items-center justify-center text-xl font-black">
+                        <i class="fa-solid fa-sitemap"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-black text-amber-300">HỒ SƠ TẬP ĐOÀN ĐỊA NGỤC CORP (THƯƠNG HIỆU DƯỚI LÒNG ĐẤT)</h2>
+                        <p class="text-xs text-stone-300">Cơ cấu tổ chức, KPI Đớn & văn hóa doanh nghiệp chuẩn 19 tầng</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('standupLoreModal')" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-red-600 text-white flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="bg-black/50 p-3.5 rounded-2xl border border-amber-500/30">
+                        <div class="font-black text-amber-300 mb-1">👑 HỘI ĐỒNG QUẢN TRỊ: THẬP ĐIỆN DIÊM VƯƠNG</div>
+                        <p class="text-stone-300">Chủ tịch điều hành 10 điện lớn và 19 tầng chuyên biệt. Câu cửa miệng mỗi kỳ họp giao ban: <em>"Tội quá trời tội!"</em></p>
+                    </div>
+                    <div class="bg-black/50 p-3.5 rounded-2xl border border-purple-500/30">
+                        <div class="font-black text-purple-300 mb-1">⚖️ BAN PHÁP CHẾ: PHÁN QUAN (Legal Counselor)</div>
+                        <p class="text-stone-300">Quản lý Big Data Sổ Sinh Tử. Cam kết chất lượng: <em>"Đã phán là không có oan!"</em> Trực tiếp xét xử Khẩu Nghiệp tại Tầng 19.</p>
+                    </div>
+                    <div class="bg-black/50 p-3.5 rounded-2xl border border-cyan-500/30">
+                        <div class="font-black text-cyan-300 mb-1">⛓️ BAN LOGISTICS: HẮC BẠCH VÔ THƯỜNG</div>
+                        <p class="text-stone-300">Chuyên vận chuyển linh hồn 24/7. Bạch Vô Thường: <em>"Đưa tay đây nào!"</em> — Hắc Vô Thường: <em>"Nhanh cái chân lên!"</em></p>
+                    </div>
+                    <div class="bg-black/50 p-3.5 rounded-2xl border border-orange-500/30">
+                        <div class="font-black text-orange-300 mb-1">🐂 BAN ĐIỀU PHỐI: ĐẦU TRÂU MẶT NGỰA</div>
+                        <p class="text-stone-300">Email liên hệ: <code>trauvuive@dianguccorp.com</code> & <code>ngualen@dianguccorp.com</code>. Phân luồng 400-500 tội nhân mỗi ca trực.</p>
+                    </div>
+                    <div class="bg-black/50 p-3.5 rounded-2xl border border-red-500/30">
+                        <div class="font-black text-red-300 mb-1">🔥 BAN THỰC THI: NGỤC TỐT (Execution Tech)</div>
+                        <p class="text-stone-300">Đo lường KPI bằng đơn vị <strong>ĐỚN</strong> và <strong>DPM (Đớn/Phút)</strong>. Roi da = 20 Đớn, Vạc dầu sôi = 1.000.000 Đớn ("Yêu thương khách hàng - Cho vô chảo dầu").</p>
+                    </div>
+                    <div class="bg-black/50 p-3.5 rounded-2xl border border-emerald-500/30">
+                        <div class="font-black text-emerald-300 mb-1">🍵 BAN FORMAT: MẠNH BÀ (Chief Reset Officer)</div>
+                        <p class="text-stone-300">Chốt chặn cuối trước khi đầu thai: <em>"Format thẻ nhớ rồi mình thở nhé — Nhớ chết liền!"</em></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- MODAL 7: HỒ SƠ CÁ NHÂN & ĐỔI TÊN / TRANG PHỤC -->
+    <!-- ======================================================================= -->
+    <div id="profileModal" class="fixed inset-0 z-40 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="hell-glass-gold rounded-3xl max-w-md w-full p-5 space-y-4">
+            <div class="flex items-center justify-between border-b border-amber-500/30 pb-3">
+                <h3 class="text-base font-black text-amber-300"><i class="fa-solid fa-user-pen mr-1.5"></i>HỒ SƠ TỘI NHÂN ĐỊA NGỤC CORP</h3>
+                <button onclick="closeModal('profileModal')" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-red-600 text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <label class="text-xs font-bold text-stone-300 block mb-1">Tên hiển thị trên đầu nhân vật:</label>
+                    <input id="profileNameInput" type="text" maxlength="24" class="w-full bg-black/70 border border-amber-500/40 rounded-xl px-3 py-2 text-sm text-white">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-stone-300 block mb-1">Màu áo tội nhân / vest công sở:</label>
+                    <div class="flex gap-2">
+                        <button onclick="setPlayerColor('#ef4444')" class="w-8 h-8 rounded-full bg-red-500 border-2 border-white"></button>
+                        <button onclick="setPlayerColor('#f59e0b')" class="w-8 h-8 rounded-full bg-amber-500 border-2 border-white"></button>
+                        <button onclick="setPlayerColor('#3b82f6')" class="w-8 h-8 rounded-full bg-blue-500 border-2 border-white"></button>
+                        <button onclick="setPlayerColor('#10b981')" class="w-8 h-8 rounded-full bg-emerald-500 border-2 border-white"></button>
+                        <button onclick="setPlayerColor('#a855f7')" class="w-8 h-8 rounded-full bg-purple-500 border-2 border-white"></button>
+                        <button onclick="setPlayerColor('#ec4899')" class="w-8 h-8 rounded-full bg-pink-500 border-2 border-white"></button>
+                    </div>
+                </div>
+                <button onclick="savePlayerProfile()" class="btn-gold w-full py-2.5 rounded-xl text-black font-black text-sm">LƯU HỒ SƠ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- MODAL 8: HỆ THỐNG MÃ PHÒNG (ROOM CODE) & DANH SÁCH BẠN BÈ TRONG PHÒNG -->
+    <!-- ======================================================================= -->
+    <div id="roomModal" class="fixed inset-0 z-40 bg-black/85 backdrop-blur-md hidden items-center justify-center p-3 sm:p-6">
+        <div class="hell-glass-gold rounded-3xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+            <div class="p-4 sm:p-5 border-b border-amber-500/30 flex items-center justify-between bg-gradient-to-r from-purple-950 via-red-950 to-stone-900">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-amber-400 text-black flex items-center justify-center text-xl font-black shadow">
+                        <i class="fa-solid fa-door-open"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-black text-amber-300">HỆ THỐNG MÃ PHÒNG & ĐỒNG ĐỘI CHỊU PHẠT</h2>
+                        <p class="text-xs text-stone-300">Nhập chung Mã Phòng với bạn bè để gặp nhau trực tiếp, chat chung và dịch chuyển tới tầng của nhau</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('roomModal')" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-red-600 text-white flex items-center justify-center">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="p-4 sm:p-6 overflow-y-auto space-y-5">
+                <!-- Current Room & Share Link Box -->
+                <div class="bg-black/60 border border-amber-500/40 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <div class="text-[11px] font-bold text-stone-400 uppercase">Mã Phòng Hiện Tại Của Bạn</div>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span id="modalCurrentRoomCode" class="text-2xl font-black text-amber-400 tracking-wider">PUBLIC-666</span>
+                            <span class="bg-emerald-950 border border-emerald-500/40 text-emerald-300 text-xs px-2.5 py-0.5 rounded-full font-bold">
+                                Đang kết nối
+                            </span>
+                        </div>
+                        <div class="text-[11px] text-stone-400 mt-1">
+                            Mã định danh Linh Hồn của bạn: <code id="modalUserIdDisplay" class="text-amber-200 select-all">Đang đồng bộ...</code>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 w-full sm:w-auto">
+                        <button onclick="copyRoomInvite()" class="btn-gold text-black font-black text-xs px-4 py-2.5 rounded-xl flex items-center justify-center gap-1.5 flex-1 sm:flex-initial">
+                            <i class="fa-solid fa-copy"></i> Copy Link & Mã Phòng Mời Bạn
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Join or Create New Room Code -->
+                <div class="bg-stone-900/80 border border-white/10 rounded-2xl p-4 space-y-3">
+                    <label class="text-xs sm:text-sm font-bold text-amber-300 block">
+                        <i class="fa-solid fa-key mr-1.5"></i>Đổi Mã Phòng hoặc Tạo Phòng Riêng cho Nhóm / Livestream:
+                    </label>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <input id="roomCodeInput" type="text" maxlength="20" placeholder="Nhập mã phòng (VD: PHONG-666, CONG-TY-A)..." class="flex-1 bg-black/80 border border-amber-500/40 rounded-xl px-3.5 py-2 text-sm text-white uppercase font-bold focus:outline-none focus:border-amber-400">
+                        <button onclick="joinCustomRoom()" class="btn-hell text-white font-black text-xs px-4 py-2.5 rounded-xl whitespace-nowrap">
+                            <i class="fa-solid fa-right-to-bracket mr-1"></i> Vào Phòng Này
+                        </button>
+                        <button onclick="generateRandomRoom()" class="bg-purple-800 hover:bg-purple-700 border border-purple-400/50 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl whitespace-nowrap">
+                            <i class="fa-solid fa-dice mr-1"></i> Tạo Mã Ngẫu Nhiên
+                        </button>
+                        <button onclick="joinRoomByCode('PUBLIC-666')" class="bg-stone-800 hover:bg-stone-700 border border-stone-600 text-stone-200 font-bold text-xs px-3 py-2.5 rounded-xl whitespace-nowrap">
+                            Sảnh Chung
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Room Player Roster (Real Players + Active Leaders) -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xs sm:text-sm font-black text-amber-300 uppercase">
+                            <i class="fa-solid fa-users-viewfinder mr-1.5 text-red-400"></i>Danh Sách Linh Hồn Trong Phòng (<span id="rosterCountText">1</span> người chơi thật + đám đông mô phỏng)
+                        </h3>
+                        <span class="text-[11px] text-stone-400">Bấm "Dịch chuyển tới" để bay đến tầng của bạn bè</span>
+                    </div>
+                    <div id="roomRosterList" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- MODAL 9: BẢNG ĐIỀU KHIỂN "LỆNH DIÊM VƯƠNG" (LIVE BROADCAST & HOST EVENTS) -->
+    <!-- ======================================================================= -->
+    <div id="diemVuongModal" class="fixed inset-0 z-40 bg-black/85 backdrop-blur-md hidden items-center justify-center p-3 sm:p-6">
+        <div class="hell-glass-gold rounded-3xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden border-2 border-amber-400">
+            <div class="p-4 sm:p-5 border-b border-amber-500/40 flex items-center justify-between bg-gradient-to-r from-red-950 via-purple-950 to-stone-950">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-red-600 text-black flex items-center justify-center text-2xl font-black shadow-lg">
+                        👑
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-amber-400 text-black">BẢNG ĐIỀU HÀNH CHỦ TỊCH HĐQT</span>
+                        <h2 class="text-lg sm:text-xl font-black text-white mt-0.5">LỆNH DIÊM VƯƠNG — SỰ KIỆN TRỰC TIẾP TOÀN PHÒNG</h2>
+                    </div>
+                </div>
+                <button onclick="closeModal('diemVuongModal')" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-red-600 text-white flex items-center justify-center">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="p-4 sm:p-6 overflow-y-auto space-y-5">
+                <!-- Megaphone Broadcast Input -->
+                <div class="bg-black/60 border border-amber-500/40 rounded-2xl p-4 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <label class="text-xs sm:text-sm font-black text-amber-300">
+                            <i class="fa-solid fa-tower-broadcast text-red-500 mr-1.5"></i>PHÁT LOA PHÓNG THANH 50.000W TOÀN PHÒNG (<span id="broadcastRoomTarget" class="text-white">PUBLIC-666</span>):
+                        </label>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <input id="diemVuongBroadcastInput" type="text" maxlength="120" placeholder="Nhập sắc lệnh (VD: Tất cả anh em tập trung về Tầng 9 tắm Vạc Dầu nhận X3 KPI Đớn!)..." class="flex-1 bg-stone-950 border border-amber-500/40 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400">
+                        <button onclick="triggerRoomEvent('BROADCAST')" class="btn-gold text-black font-black text-xs px-5 py-2.5 rounded-xl whitespace-nowrap flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-bullhorn"></i> Phát Loa Ngay
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 4 Live Room-Wide Events Grid -->
+                <div>
+                    <h3 class="text-xs sm:text-sm font-black text-amber-300 uppercase mb-2.5">
+                        <i class="fa-solid fa-bolt-lightning text-amber-400 mr-1.5"></i>KÍCH HOẠT SỰ KIỆN ĐỒNG BỘ TOÀN PHÒNG (REAL-TIME):
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Event 1: Mass Summon -->
+                        <div class="bg-gradient-to-br from-red-950/80 to-stone-900 border border-red-500/40 rounded-2xl p-4 flex flex-col justify-between gap-3">
+                            <div>
+                                <div class="flex items-center gap-2 text-red-300 font-black text-sm">
+                                    <i class="fa-solid fa-users-rays text-lg text-amber-400"></i> 1. Lệnh Triệu Tập Khẩn Cấp
+                                </div>
+                                <p class="text-xs text-stone-300 mt-1">
+                                    Triệu tập toàn bộ người chơi thật trong phòng và 450 linh hồn về ngay tầng hiện tại của bạn để điểm danh!
+                                </p>
+                            </div>
+                            <button onclick="triggerRoomEvent('SUMMON_ALL')" class="btn-hell w-full py-2 rounded-xl text-white font-black text-xs">
+                                📍 Triệu Tập Toàn Phòng Về Tầng Này
+                            </button>
+                        </div>
+
+                        <!-- Event 2: X3 KPI Đớn Golden Hour -->
+                        <div class="bg-gradient-to-br from-amber-950/80 to-stone-900 border border-amber-500/40 rounded-2xl p-4 flex flex-col justify-between gap-3">
+                            <div>
+                                <div class="flex items-center gap-2 text-amber-300 font-black text-sm">
+                                    <i class="fa-solid fa-fire-flame-curved text-lg text-orange-400"></i> 2. Giờ Vàng X3 KPI ĐỚN (60s)
+                                </div>
+                                <p class="text-xs text-stone-300 mt-1">
+                                    Nhân 3 (X3) toàn bộ sản lượng ĐỚN và DPM cho tất cả thành viên trong phòng suốt 60 giây!
+                                </p>
+                            </div>
+                            <button onclick="triggerRoomEvent('X3_DON')" class="btn-gold w-full py-2 rounded-xl text-black font-black text-xs">
+                                🔥 Kích Hoạt X3 KPI Đớn Toàn Phòng
+                            </button>
+                        </div>
+
+                        <!-- Event 3: Paper Offerings Rain -->
+                        <div class="bg-gradient-to-br from-emerald-950/80 to-stone-900 border border-emerald-500/40 rounded-2xl p-4 flex flex-col justify-between gap-3">
+                            <div>
+                                <div class="flex items-center gap-2 text-emerald-300 font-black text-sm">
+                                    <i class="fa-solid fa-parachute-box text-lg text-emerald-400"></i> 3. Xả Kho Vàng Mã (Mưa Phúc Lợi)
+                                </div>
+                                <p class="text-xs text-stone-300 mt-1">
+                                    Thả mưa Xe SH giấy, iPhone giấy, Biệt thự giấy xuống sàn để mọi người chạy đi nhặt (+Xu Âm Phủ & +Đớn)!
+                                </p>
+                            </div>
+                            <button onclick="triggerRoomEvent('VANG_MA_RAIN')" class="bg-emerald-600 hover:bg-emerald-500 text-black w-full py-2 rounded-xl font-black text-xs transition shadow">
+                                💸 Xả Kho Mưa Vàng Mã Ngay
+                            </button>
+                        </div>
+
+                        <!-- Event 4: Surprise Floor 19 Karma Audit -->
+                        <div class="bg-gradient-to-br from-purple-950/80 to-stone-900 border border-purple-500/40 rounded-2xl p-4 flex flex-col justify-between gap-3">
+                            <div>
+                                <div class="flex items-center gap-2 text-purple-300 font-black text-sm">
+                                    <i class="fa-solid fa-gavel text-lg text-purple-400"></i> 4. Kiểm Toán Khẩu Nghiệp Tầng 19
+                                </div>
+                                <p class="text-xs text-stone-300 mt-1">
+                                    Đưa toàn bộ phòng về Tầng 19 để Phán Quan kiểm tra lịch sử nói xấu sau lưng & cào phím!
+                                </p>
+                            </div>
+                            <button onclick="triggerRoomEvent('AUDIT_19')" class="bg-purple-600 hover:bg-purple-500 text-white w-full py-2 rounded-xl font-black text-xs transition shadow">
+                                ⚖️ Triệu Tập Xét Xử Tầng 19
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- MAIN GAME ENGINE & 19 FLOORS DATA SCRIPT -->
+    <!-- ======================================================================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // =====================================================================
+        // 1. COMPLETE DATA FOR 21 ZONES (CHECK-IN + 18 TRADITIONAL + FLOOR 19 + MẠNH BÀ)
+        // =====================================================================
+        const ZONES = [
+            {
+                id: 0,
+                code: "SẢNH 0",
+                name: "Sảnh Nghiệt Kính Đài (Check-in)",
+                shortName: "Check-in Nghiệt Kính",
+                sin: "Khu vực tiếp nhận linh hồn mới. Quét dữ liệu Sổ Sinh Tử, đo lường KPI Nghiệp Chướng và làm bài test phân loại.",
+                punishmentName: "Soi Gương Nghiệt Kính 8K Ultra HD",
+                donRate: 100,
+                themeColor: "#7c2d12",
+                floorColor: "#1c1317",
+                accentColor: "#f59e0b",
+                apparatusType: "mirror_checkin",
+                npcName: "Bạch Vô Thường & Hắc Vô Thường",
+                npcRole: "Ban Logistics (Vận Chuyển Linh Hồn)",
+                npcEmail: "logistics@dianguccorp.com",
+                npcQuote: "Bạch Vô Thường: 'Đưa tay đây nào!' — Hắc Vô Thường: 'Nhanh cái chân lên! Quét QR Sổ Sinh Tử rồi xuống tầng nhận Đớn!'",
+                npcLook: "vothuong"
+            },
+            {
+                id: 1,
+                code: "TẦNG 1",
+                name: "Bạt Thiệt Địa Ngục (Ngục Kéo Lưỡi)",
+                shortName: "1. Bạt Thiệt (Kéo Lưỡi)",
+                sin: "Tội nói dối, đâm bị thóc chọc bị gạo, vu khống, nói lời cay độc gây chia rẽ, lừa lọc người hiền lành.",
+                punishmentName: "Kìm Sắt Kéo Dài Lưỡi Chuẩn ISO",
+                donRate: 2500,
+                themeColor: "#7f1d1d",
+                floorColor: "#230f12",
+                accentColor: "#ef4444",
+                apparatusType: "tongue_puller",
+                npcName: "Ngục Tốt Kéo Lưỡi",
+                npcRole: "Execution Technician Bậc 1",
+                npcEmail: "keoluoi.tang1@dianguccorp.com",
+                npcQuote: "Hồi trên dương gian cái lưỡi không xương trăm đường lắt léo hả? Vô đây đo KPI kéo giãn 50cm nha!",
+                npcLook: "nguctot"
+            },
+            {
+                id: 2,
+                code: "TẦNG 2",
+                name: "Tiễn Đao Địa Ngục (Ngục Cắt 10 Ngón)",
+                shortName: "2. Tiễn Đao (Kéo Cắt)",
+                sin: "Tội xúi giục làm điều sai trái, môi giới bất chính, phá hoại hạnh phúc gia can người khác.",
+                punishmentName: "Kéo Khổng Lồ Cắt Đốt Ngón Tay",
+                donRate: 4200,
+                themeColor: "#881337",
+                floorColor: "#210d18",
+                accentColor: "#f43f5e",
+                apparatusType: "giant_scissors",
+                npcName: "Đầu Trâu Điều Phối",
+                npcRole: "Ban Điều Phối (Coordinator)",
+                npcEmail: "trauvuive@dianguccorp.com",
+                npcQuote: "Mọi thắc mắc về quy trình cắt ngón tay vui lòng gửi mail về trauvuive@dianguccorp.com nhé!",
+                npcLook: "dautrau"
+            },
+            {
+                id: 3,
+                code: "TẦNG 3",
+                name: "Thiết Thụ Địa Ngục (Ngục Cây Sắt Nhọn)",
+                shortName: "3. Thiết Thụ (Cây Sắt)",
+                sin: "Tội ly gián anh em ruột thịt, gây bất hòa trong gia đình, chia rẽ tình thân vì tư lợi.",
+                punishmentName: "Treo Mình Trên Cây Sắt Gai Nhọn",
+                donRate: 6800,
+                themeColor: "#3f3f46",
+                floorColor: "#18181b",
+                accentColor: "#a1a1aa",
+                apparatusType: "iron_tree",
+                npcName: "Mặt Ngựa Giám Sát",
+                npcRole: "Ban Điều Phối (Coordinator)",
+                npcEmail: "ngualen@dianguccorp.com",
+                npcQuote: "Gia đình người ta đang yên ấm mà chọc ngoáy hả? Lên cây sắt ngắm cảnh âm phủ đi cưng!",
+                npcLook: "matngua"
+            },
+            {
+                id: 4,
+                code: "TẦNG 4",
+                name: "Nghiệt Kính Địa Ngục (Ngục Gương Chiếu Nghiệp)",
+                shortName: "4. Nghiệt Kính (Chiếu Tội)",
+                sin: "Tội phạm pháp trên dương gian nhưng dùng tiền bạc, quyền thế để chạy tội, đổ oan cho người vô tội.",
+                punishmentName: "Chiếu Phim Tội Ác Tua Lại 1000 Lần",
+                donRate: 9500,
+                themeColor: "#1e3a8a",
+                floorColor: "#0f172a",
+                accentColor: "#38bdf8",
+                apparatusType: "karma_mirror",
+                npcName: "Phán Quan Pháp Chế",
+                npcRole: "Legal Counselor (Ban Pháp Chế)",
+                npcEmail: "phanquan@dianguccorp.com",
+                npcQuote: "Dương gian chạy án được chứ xuống đây Camera Chạy Bằng Cơm Âm Phủ ghi full HD không che! Đã phán là không có oan!",
+                npcLook: "phanquan"
+            },
+            {
+                id: 5,
+                code: "TẦNG 5",
+                name: "Trưng Lung Địa Ngục (Ngục Lồng Hấp)",
+                shortName: "5. Trưng Lung (Lồng Hấp)",
+                sin: "Tội ngồi lê đôi mách, thêu dệt chuyện không thành có, tung tin đồn thất thiệt hại danh dự người khác.",
+                punishmentName: "Xửng Hấp Dimsum Hơi Nước 500 Độ C",
+                donRate: 15000,
+                themeColor: "#9a3412",
+                floorColor: "#27140c",
+                accentColor: "#fb923c",
+                apparatusType: "steamer",
+                npcName: "Ngục Tốt Đầu Bếp",
+                npcRole: "Chuyên Viên Hấp Cách Thủy",
+                npcEmail: "longhap.tang5@dianguccorp.com",
+                npcQuote: "Ai hay ngồi lê đôi mách, thêm mắm dặm muối thì vô xửng hấp 30 phút cho chín đều lời đồn nha!",
+                npcLook: "nguctot"
+            },
+            {
+                id: 6,
+                code: "TẦNG 6",
+                name: "Đồng Trụ Địa Ngục (Ngục Cột Đồng Nung Đỏ)",
+                shortName: "6. Đồng Trụ (Cột Đồng)",
+                sin: "Tội cố ý phóng hỏa, hủy hoại tài sản, đốt rừng, hủy diệt sinh kế của người lương thiện.",
+                punishmentName: "Ôm Cột Đồng Nung Đỏ 1200 Độ C",
+                donRate: 28000,
+                themeColor: "#b45309",
+                floorColor: "#291507",
+                accentColor: "#f59e0b",
+                apparatusType: "bronze_pillar",
+                npcName: "Ngục Tốt Lò Luyện",
+                npcRole: "Kỹ Sư Nhiệt Luyện Đớn",
+                npcEmail: "cotdong.tang6@dianguccorp.com",
+                npcQuote: "Cột đồng mới nung đỏ rực luôn, ôm một cái là ấm lòng chiến sĩ, lên KPI 28.000 Đớn liền tay!",
+                npcLook: "nguctot"
+            },
+            {
+                id: 7,
+                code: "TẦNG 7",
+                name: "Đao Sơn Địa Ngục (Ngục Núi Đao)",
+                shortName: "7. Đao Sơn (Núi Đao)",
+                sin: "Tội sát sinh vô độ, báng bổ thần linh, cậy mạnh hiếp yếu, dùng bạo lực đàn áp người khác.",
+                punishmentName: "Leo Núi Đao Sắc Bén Chân Trần",
+                donRate: 45000,
+                themeColor: "#475569",
+                floorColor: "#131822",
+                accentColor: "#cbd5e1",
+                apparatusType: "blade_mountain",
+                npcName: "Thập Điện Diêm Vương (Điện 7)",
+                npcRole: "Hội Đồng Quản Trị (Board Member)",
+                npcEmail: "diemvuong7@dianguccorp.com",
+                npcQuote: "Tội quá trời tội! Leo hết đỉnh núi đao này cho trẫm xem chỉ số DPM tăng tới đâu!",
+                npcLook: "diemvuong"
+            },
+            {
+                id: 8,
+                code: "TẦNG 8",
+                name: "Băng Sơn Địa Ngục (Ngục Núi Băng)",
+                shortName: "8. Băng Sơn (Núi Băng)",
+                sin: "Tội bất nhân bạc nghĩa, phụ bạc người ơn, lạnh lùng bỏ mặc cha mẹ già yếu hoặc người hoạn nạn.",
+                punishmentName: "Đóng Băng Vĩnh Cửu -273 Độ C",
+                donRate: 65000,
+                themeColor: "#0369a1",
+                floorColor: "#081c29",
+                accentColor: "#38bdf8",
+                apparatusType: "ice_mountain",
+                npcName: "Ngục Tốt Tuyết Lạnh",
+                npcRole: "Kỹ Sư Đông Lạnh Trái Tim",
+                npcEmail: "bangson.tang8@dianguccorp.com",
+                npcQuote: "Sống trên đời lòng dạ lạnh như băng thì xuống Tầng 8 tận hưởng máy lạnh âm 200 độ miễn phí nha!",
+                npcLook: "nguctot"
+            },
+            {
+                id: 9,
+                code: "TẦNG 9",
+                name: "Du Oa Địa Ngục (Ngục Vạc Dầu Sôi 1.000.000 Đớn)",
+                shortName: "9. Du Oa (Vạc Dầu Sôi)",
+                sin: "Tội tham ô, ức hiếp dân lành, buôn bán thực phẩm bẩn độc hại, đạo đức giả hại người.",
+                punishmentName: "Chiên Giòn Trong Vạc Dầu Sôi (1.000.000 ĐỚN)",
+                donRate: 1000000,
+                themeColor: "#c2410c",
+                floorColor: "#2b0f06",
+                accentColor: "#facc15",
+                apparatusType: "oil_cauldron",
+                npcName: "Trưởng Ca Vạc Dầu",
+                npcRole: "Giám Đốc Trải Nghiệm Vạc Dầu",
+                npcEmail: "vacdau1trieudon@dianguccorp.com",
+                npcQuote: "Slogan Tầng 9: 'Yêu thương khách hàng — Cho vô chảo dầu!' Roi da chỉ 20 Đớn thôi, vô Vạc Dầu là chốt đơn 1.000.000 Đớn/nhịp!",
+                npcLook: "diemvuong"
+            },
+            {
+                id: 10,
+                code: "TẦNG 10",
+                name: "Ngưu Khanh Địa Ngục (Ngục Hố Trâu Húc)",
+                shortName: "10. Ngưu Khanh (Hố Trâu)",
+                sin: "Tội ngược đãi động vật, hành hạ sinh vật yếu ớt, tàn nhẫn với muôn loài.",
+                punishmentName: "Đàn Trâu Sắt Điên Cuồng Húc Liên Hoàn",
+                donRate: 85000,
+                themeColor: "#713f12",
+                floorColor: "#1f1509",
+                accentColor: "#eab308",
+                apparatusType: "bull_pit",
+                npcName: "Đầu Trâu Trưởng Đội",
+                npcRole: "Chỉ Huy Đội Thiết Ngưu",
+                npcEmail: "trauvuive@dianguccorp.com",
+                npcQuote: "Hồi xưa ăn hiếp chó mèo, chim cá hả? Giờ vô hố để anh em họ hàng nhà Trâu tụi tui chăm sóc lại!",
+                npcLook: "dautrau"
+            },
+            {
+                id: 11,
+                code: "TẦNG 11",
+                name: "Thạch Áp Địa Ngục (Ngục Đá Tảng Đè)",
+                shortName: "11. Thạch Áp (Đá Đè)",
+                sin: "Tội bạo hành trẻ nhỏ, bỏ rơi con cái, thiếu trách nhiệm làm cha mẹ, ức hiếp kẻ không có sức phản kháng.",
+                punishmentName: "Máy Ép Đá Tảng Nghìn Cân",
+                donRate: 110000,
+                themeColor: "#57534e",
+                floorColor: "#1c1917",
+                accentColor: "#d6d3d1",
+                apparatusType: "stone_press",
+                npcName: "Ngục Tốt Thạch Áp",
+                npcRole: "Vận Hành Máy Ép Thủy Lực",
+                npcEmail: "thachap.tang11@dianguccorp.com",
+                npcQuote: "Tảng đá này nặng đúng bằng gánh nặng tổn thương ngươi gây ra cho người yếu thế!",
+                npcLook: "nguctot"
+            },
+            {
+                id: 12,
+                code: "TẦNG 12",
+                name: "Thung Minh Địa Ngục (Ngục Cối Giã)",
+                shortName: "12. Thung Minh (Cối Giã)",
+                sin: "Tội lãng phí lương thực, phung phí của trời, coi thường công sức lao động của nông dân.",
+                punishmentName: "Cối Giã Gạo Khổng Lồ Tự Động",
+                donRate: 135000,
+                themeColor: "#854d0e",
+                floorColor: "#231709",
+                accentColor: "#fde047",
+                apparatusType: "mortar_pestle",
+                npcName: "Ngục Tốt Cối Giã",
+                npcRole: "Kỹ Sư Cơ Khí Cối Giã",
+                npcEmail: "coigia.tang12@dianguccorp.com",
+                npcQuote: "Ăn bỏ mứa, trà sữa uống 1 hụm rồi vứt hả? Vô cối giã 100 nhịp cho hiểu giá trị hạt gạo nha!",
+                npcLook: "nguctot"
+            },
+            {
+                id: 13,
+                code: "TẦNG 13",
+                name: "Huyết Trì Địa Ngục (Ngục Ao Huyết)",
+                shortName: "13. Huyết Trì (Ao Huyết)",
+                sin: "Tội bất hiếu với ông bà cha mẹ, xúc phạm bậc hiền lương, vong ơn bội nghĩa.",
+                punishmentName: "Ngâm Mình Trong Ao Huyết Sôi Sục",
+                donRate: 160000,
+                themeColor: "#991b1b",
+                floorColor: "#260808",
+                accentColor: "#f87171",
+                apparatusType: "blood_pool",
+                npcName: "Hắc Vô Thường Giám Sát",
+                npcRole: "Ban Logistics & Thanh Tra",
+                npcEmail: "hacvothuong@dianguccorp.com",
+                npcQuote: "Nhanh cái chân lên! Bất hiếu là trọng tội hàng đầu trong bộ luật Địa Ngục Corp!",
+                npcLook: "vothuong"
+            },
+            {
+                id: 14,
+                code: "TẦNG 14",
+                name: "Vọng Hương / Hoan Tử Địa Ngục",
+                shortName: "14. Vọng Hương / Hoan Tử",
+                sin: "Tội hủy hoại thân thể cha mẹ ban cho, hoặc ép bức người khác đến bước đường cùng.",
+                punishmentName: "Đài Vọng Hương Nhìn Về Dương Thế Đau Khổ",
+                donRate: 195000,
+                themeColor: "#4c1d95",
+                floorColor: "#170b2b",
+                accentColor: "#c084fc",
+                apparatusType: "wangxiang_platform",
+                npcName: "Phán Quan Vọng Hương",
+                npcRole: "Ban Pháp Chế Nội Tâm",
+                npcEmail: "vonghuong@dianguccorp.com",
+                npcQuote: "Đứng trên Vọng Hương Đài nhìn người thân khóc thương mà ăn năn hối cải đi!",
+                npcLook: "phanquan"
+            },
+            {
+                id: 15,
+                code: "TẦNG 15",
+                name: "Kiệt Hình Địa Ngục (Ngục Phanh Thây)",
+                shortName: "15. Kiệt Hình (Phanh Thây)",
+                sin: "Tội đào mộ cuốc mả, xâm phạm người đã khuất, làm chuyện đại nghịch vô đạo.",
+                punishmentName: "Bàn Phẫu Thuật Nghiệp Chướng Laser",
+                donRate: 240000,
+                themeColor: "#be123c",
+                floorColor: "#290814",
+                accentColor: "#fb7185",
+                apparatusType: "dismember_table",
+                npcName: "Ngục Tốt Giải Phẫu",
+                npcRole: "Bác Sĩ Thực Thi Cấp Cao",
+                npcEmail: "kiethinh.tang15@dianguccorp.com",
+                npcQuote: "Người khuất rồi mà còn không tha, xuống đây trải nghiệm combo tháo lắp khớp xương 240.000 Đớn!",
+                npcLook: "nguctot"
+            },
+            {
+                id: 16,
+                code: "TẦNG 16",
+                name: "Hỏa Sơn Địa Ngục (Ngục Núi Lửa)",
+                shortName: "16. Hỏa Sơn (Núi Lửa)",
+                sin: "Tội biển thủ công quỹ, ăn chặn tiền từ thiện cứu trợ người nghèo, tham nhũng của công.",
+                punishmentName: "Miệng Núi Lửa Dung Nham Phun Trào",
+                donRate: 320000,
+                themeColor: "#ea580c",
+                floorColor: "#2b1105",
+                accentColor: "#fb923c",
+                apparatusType: "volcano",
+                npcName: "Thập Điện Diêm Vương (Điện 16)",
+                npcRole: "Chủ Tịch Hội Đồng Xét Xử Tham Nhũng",
+                npcEmail: "chu.tich@dianguccorp.com",
+                npcQuote: "Tiền cứu trợ đồng bào mà cũng dám nuốt? Xuống miệng núi lửa tắm dung nham hoàn trả từng đồng!",
+                npcLook: "diemvuong"
+            },
+            {
+                id: 17,
+                code: "TẦNG 17",
+                name: "Thạch Ma Địa Ngục (Ngục Cối Xay Đá)",
+                shortName: "17. Thạch Ma (Cối Xay)",
+                sin: "Tội làm quan tham nhũng, lạm quyền chà đạp bách tính, bóc lột sức lao động tận xương tủy.",
+                punishmentName: "Cối Xay Đá Khổng Lồ Xoay Liên Tục",
+                donRate: 450000,
+                themeColor: "#52525b",
+                floorColor: "#18181c",
+                accentColor: "#e4e4e7",
+                apparatusType: "stone_mill",
+                npcName: "Mặt Ngựa Vận Hành Xay",
+                npcRole: "Ban Điều Phối Cối Xay",
+                npcEmail: "ngualen@dianguccorp.com",
+                npcQuote: "Xưa chà đạp dân lành sao thì nay cối xay đá chà lại y chang vậy, công bằng 100%!",
+                npcLook: "matngua"
+            },
+            {
+                id: 18,
+                code: "TẦNG 18",
+                name: "Đao Cứ Địa Ngục (Ngục Cưa Xẻ)",
+                shortName: "18. Đao Cứ (Cưa Xẻ)",
+                sin: "Tội gian thương lừa đảo quy mô lớn, rút ruột công trình, bán hàng giả hại chết nhiều người.",
+                punishmentName: "Cưa Máy Đôi Cao Tốc Xẻ Dọc Nghiệp Chướng",
+                donRate: 666000,
+                themeColor: "#991b1b",
+                floorColor: "#1f0606",
+                accentColor: "#f87171",
+                apparatusType: "saw_blade",
+                npcName: "Ngục Tốt Cưa Máy",
+                npcRole: "Chuyên Gia Cưa Cắt Tầng Đáy",
+                npcEmail: "daocu.tang18@dianguccorp.com",
+                npcQuote: "Rút ruột công trình, lừa đảo khách hàng hả? Xuống tầng 18 nghe tiếng cưa máy 666.000 Đớn/phút!",
+                npcLook: "nguctot"
+            },
+            {
+                id: 19,
+                code: "TẦNG 19 ĐẶC BIỆT",
+                name: "Ngục Khẩu Nghiệp & Tòa Án Phán Quan (Tầng 19 Mới)",
+                shortName: "19. Ngục Khẩu Nghiệp (Đặc Biệt)",
+                sin: "TẦNG ĐẶC BIỆT MỚI XÂY: Chuyên trị người hay nói xấu sau lưng nơi công sở, lập group chat nói xấu, anh hùng bàn phím toxic trên mạng, cười cợt câu đố của Địa Ngục Corp!",
+                punishmentName: "Gõ Bàn Phím Gai Đá & Loa Phóng Thanh Phát Lại Lời Nói Xấu 50.000W",
+                donRate: 888888,
+                themeColor: "#6b21a8",
+                floorColor: "#1c092b",
+                accentColor: "#f0abfc",
+                apparatusType: "keyboard_speaker_19",
+                npcName: "Phán Quan Tối Cao (AI Legal Counselor)",
+                npcRole: "Trưởng Ban Pháp Chế Tầng 19",
+                npcEmail: "phanquan.tang19@dianguccorp.com",
+                npcQuote: "Đã phán là không có oan! Lời nói xấu sau lưng ngươi tưởng không ai biết ư? Hệ thống Cloud Âm Phủ lưu hết rồi, lại đây nhận án!",
+                npcLook: "phanquan"
+            },
+            {
+                id: 20,
+                code: "TRẠM RESET",
+                name: "Quán Canh Mạnh Bà (Ban Format Thẻ Nhớ)",
+                shortName: "Trạm Cuối: Mạnh Bà",
+                sin: "Trạm cuối hành trình sau khi trả hết Nghiệp qua 19 tầng. Uống Canh Mạnh Bà để Format bộ nhớ trước khi bước vào Cổng Đầu Thai.",
+                punishmentName: "Thưởng Thức Canh Mạnh Bà Full Topping",
+                donRate: 0,
+                themeColor: "#0f766e",
+                floorColor: "#072224",
+                accentColor: "#2dd4bf",
+                apparatusType: "manh_ba_station",
+                npcName: "Mạnh Bà (Chief Reset Officer)",
+                npcRole: "Giám Đốc Ban Format Ký Ức",
+                npcEmail: "manhba.format@dianguccorp.com",
+                npcQuote: "Format thẻ nhớ rồi mình thở nhé — Nhớ chết liền! Uống hết chén canh này là quên sạch drama kiếp trước, đi đầu thai làm người tử tế nha con!",
+                npcLook: "manhba"
+            }
+        ];
+
+        // =====================================================================
+        // 2. VIETNAMESE CROWD GENERATOR (400 - 500 REALISTIC SIMULATED + REAL PLAYERS)
+        // =====================================================================
+        const VN_LAST_NAMES = ["Nguyễn", "Trần", "Lê", "Phạm", "Hoàng", "Huỳnh", "Phan", "Vũ", "Võ", "Đặng", "Bùi", "Đỗ", "Hồ", "Ngô", "Dương", "Lý"];
+        const VN_MID_NAMES = ["Văn", "Thị", "Minh", "Hoàng", "Ngọc", "Quốc", "Gia", "Thanh", "Đức", "Bảo", "Tuấn", "Hữu", "Mỹ", "Khánh"];
+        const VN_FIRST_NAMES = ["Tèo", "Tý", "Hùng", "Dũng", "Trang", "Linh", "Hương", "Phương", "Thảo", "Khoa", "Đạt", "Long", "Nam", "Kiệt", "Vy", "Ngân", "Bình", "An", "Phúc", "Lộc", "Sơn", "Tùng", "Giang", "Hải", "Yến", "Nhi", "Quỳnh", "Châu"];
+        const SIN_TITLES = [
+            "Trùm Nói Xấu Sếp", "Thánh Cào Phím", "Chúa Chổm Quỵt Nợ", "Hay Ăn Bỏ Mứa",
+            "Bậc Thầy Ngồi Lê", "Thánh Hứa Lèo", "Chuyên Gia Trễ Deadline", "Tội Nhân Cười Vô Duyên",
+            "Trùm Drama Công Sở", "Thực Tập Sinh Tầng 9", "Khách VIP Vạc Dầu", "Chuyên Viên Khẩu Nghiệp"
+        ];
+        const FUNNY_CHATS = [
+            "Biết thế hồi sống bớt nói xấu sếp trong group Zalo!",
+            "Vạc dầu Tầng 9 hơi nóng nha anh Ngục Tốt ơi, chỉnh lửa nhỏ xíu!",
+            "Ai nhắn người nhà đốt giùm chiếc SH giấy với cái quạt điều hòa đi!",
+            "Mới cười câu đố ở cổng có 1 cái mà bị cộng thêm 5000 Đớn huhu!",
+            "Tầng 19 Phán Quan tra lịch sử chat kỹ quá, không chối được câu nào!",
+            "Đầu Trâu Mặt Ngựa đọc email chưa? Em gửi đơn xin giảm Đớn rồi mà!",
+            "Roi da có 20 Đớn thôi, qua Tầng 9 một phát 1 triệu Đớn muốn xỉu!",
+            "Có ai lập team vượt Tầng 7 Núi Đao không? Đi một mình đau chân quá!",
+            "Canh Mạnh Bà có vị trà sữa trân châu đường đen không mọi người?",
+            "Đã phán là không có oan! Phán Quan Tầng 19 đọc đúng tên group chat luôn!",
+            "Bạch Vô Thường nắm tay hơi chặt nha anh ơi!",
+            "Đúng là Địa Ngục Corp: Chết Là Còn, chạy KPI Đớn mệt nghỉ!",
+            "Hồi xưa hứa ngủ sớm mà toàn thức tới 3h sáng coi Tóp Tóp nên giờ ở đây!",
+            "Tầng 5 lồng hấp hơi giống tiệm dimsum Quận 5 quá vậy!"
+        ];
+
+        const VANG_MA_ITEMS = [
+            {
+                id: "fan",
+                name: "Quạt Hơi Nước Công Nghiệp Giấy",
+                desc: "Làm mát tức thì khi xuống Vạc Dầu & Núi Lửa. Giảm 25% mệt mỏi khi chịu Đớn, tăng +20% KPI Đớn nhận được.",
+                price: 200,
+                icon: "fa-fan",
+                color: "#38bdf8",
+                bonusMult: 1.25
+            },
+            {
+                id: "iphone",
+                name: "iPhone 18 Pro Max Vàng Mã (1TB)",
+                desc: "Bắt sóng 6G Âm Phủ. Giúp tra cứu Sổ Sinh Tử nhanh, tăng +40% Xu Âm Phủ nhận được mỗi lần chịu phạt.",
+                price: 350,
+                icon: "fa-mobile-screen-button",
+                color: "#a855f7",
+                bonusMult: 1.4
+            },
+            {
+                id: "sh_bike",
+                name: "Xe SH 350i Giấy Full Độ LED",
+                desc: "Tăng 45% tốc độ di chuyển của nhân vật qua các tầng địa ngục và tạo hiệu ứng hào quang khói lửa.",
+                price: 500,
+                icon: "fa-motorcycle",
+                color: "#ef4444",
+                speedBoost: 1.45
+            },
+            {
+                id: "villa",
+                name: "Biệt Thự Vinhomes Âm Phủ Giấy",
+                desc: "Khẳng định đẳng cấp VIP dưới lòng đất. Nhận danh hiệu 'Đại Gia Âm Phủ' và nhân đôi (x2) tốc độ hoàn thành KPI Đớn!",
+                price: 900,
+                icon: "fa-hotel",
+                color: "#f59e0b",
+                bonusMult: 2.0
+            }
+        ];
+
+        // =====================================================================
+        // 3. GAME STATE & PLAYER OBJECT
+        // =====================================================================
+        const ZONE_WIDTH = 1200;
+        const ZONE_HEIGHT = 760;
+
+        // Read ?room=CODE from URL if present
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialRoomCode = (urlParams.get("room") || "PUBLIC-666").toUpperCase().replace(/[^A-Z0-9-_]/g, "").slice(0, 20) || "PUBLIC-666";
+
+        const state = {
+            roomCode: initialRoomCode,
+            currentZoneId: 0,
+            targetCrowdCount: 450,
+            soundEnabled: true,
+            totalDon: 0,
+            dpmHistory: [], // timestamps & amounts for DPM calculation
+            karma: 120,
+            coins: 500,
+            completedZones: new Set(),
+            ownedVangMa: new Set(),
+            miniTortureProgress: 0,
+            activeQuizAnswers: {},
+            camera: { x: 0, y: 0 },
+            keys: {},
+            mouseTarget: null,
+            particles: [],
+            floatingTexts: [],
+            fallingOfferings: [],
+            x3DonUntil: 0,
+            lastProcessedEventId: null,
+            remotePlayers: new Map()
+        };
+
+        const player = {
+            id: "local_player",
+            name: "Tội Nhân #" + Math.floor(1000 + Math.random() * 8999),
+            title: "Thực Tập Sinh Chịu Phạt",
+            x: ZONE_WIDTH / 2,
+            y: ZONE_HEIGHT - 140,
+            vx: 0,
+            vy: 0,
+            speed: 4.3,
+            color: "#ef4444",
+            hairColor: "#18181b",
+            skinColor: "#fde047",
+            facing: 1,
+            animFrame: 0,
+            isBeingPunished: false,
+            punishTimer: 0,
+            chatText: "Mới xuống Địa Ngục Corp, xin chào 500 anh em!",
+            chatTimer: 280
+        };
+
+        // Crowd of 500 simulated online players distributed across all 21 zones
+        const crowdSouls = [];
+        const SHIRT_COLORS = ["#ef4444", "#f97316", "#eab308", "#22c55e", "#06b6d4", "#3b82f6", "#8b5cf6", "#ec4899", "#64748b", "#d97706"];
+        const SKIN_TONES = ["#fde68a", "#fcd34d", "#fdba74", "#fed7aa", "#f5d0fe"];
+
+        function initCrowdSouls(maxCount = 500) {
+            crowdSouls.length = 0;
+            for (let i = 0; i < maxCount; i++) {
+                const ln = VN_LAST_NAMES[i % VN_LAST_NAMES.length];
+                const mn = VN_MID_NAMES[(i * 3) % VN_MID_NAMES.length];
+                const fn = VN_FIRST_NAMES[(i * 7) % VN_FIRST_NAMES.length];
+                const zoneId = i < 45 ? 0 : (i < 110 ? 19 : (i % ZONES.length));
+                const isPunished = Math.random() < 0.36 && zoneId > 0 && zoneId < 20;
+                crowdSouls.push({
+                    id: "soul_" + i,
+                    name: `${ln} ${mn} ${fn}`,
+                    title: SIN_TITLES[i % SIN_TITLES.length],
+                    zoneId: zoneId,
+                    x: isPunished ? (ZONE_WIDTH / 2 + (Math.random() - 0.5) * 180) : (140 + Math.random() * (ZONE_WIDTH - 280)),
+                    y: isPunished ? (ZONE_HEIGHT / 2 - 20 + (Math.random() - 0.5) * 90) : (160 + Math.random() * (ZONE_HEIGHT - 280)),
+                    targetX: 200 + Math.random() * (ZONE_WIDTH - 400),
+                    targetY: 200 + Math.random() * (ZONE_HEIGHT - 320),
+                    speed: 1.2 + Math.random() * 1.4,
+                    color: SHIRT_COLORS[i % SHIRT_COLORS.length],
+                    skinColor: SKIN_TONES[i % SKIN_TONES.length],
+                    facing: Math.random() < 0.5 ? 1 : -1,
+                    animOffset: Math.random() * 100,
+                    isPunished: isPunished,
+                    karma: 40 + Math.floor(Math.random() * 400),
+                    chatText: Math.random() < 0.18 ? FUNNY_CHATS[i % FUNNY_CHATS.length] : "",
+                    chatTimer: Math.floor(Math.random() * 350)
+                });
+            }
+        }
+        initCrowdSouls(500);
+
+        // =====================================================================
+        // 4. WEB AUDIO SYNTHESIZER (NO EXTERNAL FILES REQUIRED)
+        // =====================================================================
+        let audioCtx = null;
+        function ensureAudio() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) audioCtx = new AudioContextClass();
+            }
+            if (audioCtx && audioCtx.state === "suspended") {
+                audioCtx.resume();
+            }
+        }
+
+        function playSound(type) {
+            if (!state.soundEnabled) return;
+            try {
+                ensureAudio();
+                if (!audioCtx) return;
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === "whip") {
+                    osc.type = "sawtooth";
+                    osc.frequency.setValueAtTime(180, now);
+                    osc.frequency.exponentialRampToValueAtTime(620, now + 0.08);
+                    osc.frequency.exponentialRampToValueAtTime(90, now + 0.18);
+                    gain.gain.setValueAtTime(0.18, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                    osc.start(now);
+                    osc.stop(now + 0.2);
+                } else if (type === "gong") {
+                    osc.type = "triangle";
+                    osc.frequency.setValueAtTime(140, now);
+                    osc.frequency.exponentialRampToValueAtTime(110, now + 0.9);
+                    gain.gain.setValueAtTime(0.28, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.95);
+                    osc.start(now);
+                    osc.stop(now + 0.95);
+                } else if (type === "elevator") {
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.12);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                } else if (type === "stamp") {
+                    osc.type = "square";
+                    osc.frequency.setValueAtTime(320, now);
+                    osc.frequency.setValueAtTime(480, now + 0.09);
+                    osc.frequency.setValueAtTime(720, now + 0.18);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+                    osc.start(now);
+                    osc.stop(now + 0.4);
+                }
+            } catch (e) {
+                // Ignore audio errors on restricted autoplay
+            }
+        }
+
+        // =====================================================================
+        // 5. FIREBASE REALTIME MULTIPLAYER SYNC (MERGED WITH 450 SIMULATED SOULS)
+        // =====================================================================
+        let db = null;
+        let auth = null;
+        let currentUser = null;
+        let roomEventUnsubscribe = null;
+        const appId = typeof __app_id !== "undefined" ? __app_id : "dianguccorp-19tang-rpg";
+
+        async function initFirebaseMultiplayer() {
+            try {
+                if (typeof __firebase_config === "undefined" || !__firebase_config) return;
+                const firebaseConfig = JSON.parse(__firebase_config);
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                if (typeof __initial_auth_token !== "undefined" && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                currentUser = auth.currentUser;
+                if (!currentUser) return;
+
+                player.id = currentUser.uid;
+                const uidEl = document.getElementById("modalUserIdDisplay");
+                if (uidEl) uidEl.textContent = currentUser.uid;
+
+                const playersCol = collection(db, "artifacts", appId, "public", "data", "hell_players");
+                onSnapshot(
+                    playersCol,
+                    (snapshot) => {
+                        const now = Date.now();
+                        state.remotePlayers.clear();
+                        snapshot.forEach((docSnap) => {
+                            const data = docSnap.data();
+                            const pRoom = (data.roomCode || "PUBLIC-666").toUpperCase();
+                            if (
+                                docSnap.id !== player.id &&
+                                data &&
+                                pRoom === state.roomCode &&
+                                now - (data.updatedAt || 0) < 120000
+                            ) {
+                                state.remotePlayers.set(docSnap.id, { ...data, uid: docSnap.id });
+                            }
+                        });
+                        updateOnlineCounterUI();
+                        if (!document.getElementById("roomModal").classList.contains("hidden")) {
+                            renderRoomRoster();
+                        }
+                    },
+                    (err) => {
+                        console.debug("Realtime sync notice:", err);
+                    }
+                );
+
+                // Subscribe to Room Live Broadcasts & Events
+                subscribeToRoomEvents(state.roomCode);
+
+                // Heartbeat sync every 2.5 seconds
+                setInterval(() => {
+                    syncPlayerToCloud();
+                }, 2500);
+                syncPlayerToCloud();
+            } catch (e) {
+                console.debug("Running in standalone crowd simulation mode.");
+            }
+        }
+
+        function subscribeToRoomEvents(roomCode) {
+            if (!db || !currentUser) return;
+            if (roomEventUnsubscribe) {
+                roomEventUnsubscribe();
+                roomEventUnsubscribe = null;
+            }
+            const roomDocRef = doc(db, "artifacts", appId, "public", "data", "hell_rooms", roomCode);
+            roomEventUnsubscribe = onSnapshot(
+                roomDocRef,
+                (docSnap) => {
+                    if (!docSnap.exists()) return;
+                    const eventData = docSnap.data();
+                    if (!eventData || !eventData.eventId) return;
+                    // Only process recent events (within last 45 seconds) once
+                    if (
+                        eventData.eventId !== state.lastProcessedEventId &&
+                        Date.now() - (eventData.timestamp || 0) < 45000
+                    ) {
+                        state.lastProcessedEventId = eventData.eventId;
+                        applyRoomEventLocally(eventData);
+                    }
+                },
+                (err) => {
+                    console.debug("Room event listener notice:", err);
+                }
+            );
+        }
+
+        async function syncPlayerToCloud() {
+            if (!db || !currentUser) return;
+            try {
+                const playerRef = doc(db, "artifacts", appId, "public", "data", "hell_players", currentUser.uid);
+                await setDoc(playerRef, {
+                    name: player.name,
+                    title: player.title,
+                    roomCode: state.roomCode,
+                    zoneId: state.currentZoneId,
+                    x: Math.round(player.x),
+                    y: Math.round(player.y),
+                    color: player.color,
+                    facing: player.facing,
+                    chatText: player.chatTimer > 0 ? player.chatText : "",
+                    totalDon: state.totalDon,
+                    updatedAt: Date.now()
+                });
+            } catch (e) {
+                // Ignore transient network errors
+            }
+        }
+
+        // =====================================================================
+        // 6. REALISTIC ARTICULATED 2D CHARACTER & TORTURE APPARATUS RENDERER
+        // =====================================================================
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const minimapCanvas = document.getElementById("minimapCanvas");
+        const minimapCtx = minimapCanvas.getContext("2d");
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        /**
+         * Draws a realistic-proportioned articulated 2D human/deity/demon character
+         * with head, hair/crown/horns, facial expression, torso clothing, lanyard badge, arms & legs.
+         */
+        function drawArticulatedCharacter(c, x, y, opts) {
+            const {
+                name = "",
+                title = "",
+                color = "#ef4444",
+                skinColor = "#fde047",
+                facing = 1,
+                walkCycle = 0,
+                isPunished = false,
+                isPlayer = false,
+                isNPC = false,
+                npcLook = "",
+                chatText = "",
+                hasAura = false,
+                scale = 1
+            } = opts;
+
+            c.save();
+            c.translate(x, y);
+            c.scale(scale, scale);
+
+            // Ground shadow
+            c.fillStyle = "rgba(0, 0, 0, 0.45)";
+            c.beginPath();
+            c.ellipse(0, 4, 15, 6, 0, 0, Math.PI * 2);
+            c.fill();
+
+            // VIP Vang Ma Aura if player owns items
+            if (hasAura) {
+                const grad = c.createRadialGradient(0, -20, 4, 0, -20, 34);
+                grad.addColorStop(0, "rgba(250, 204, 21, 0.35)");
+                grad.addColorStop(1, "rgba(239, 68, 68, 0)");
+                c.fillStyle = grad;
+                c.beginPath();
+                c.arc(0, -20, 34, 0, Math.PI * 2);
+                c.fill();
+            }
+
+            const legSwing = isPunished ? Math.sin(walkCycle * 0.4) * 3 : Math.sin(walkCycle) * 7;
+            const armSwing = isPunished ? -10 + Math.sin(walkCycle * 0.5) * 6 : -Math.sin(walkCycle) * 8;
+            const bobY = isPunished ? Math.sin(walkCycle * 0.6) * 2.5 : Math.abs(Math.sin(walkCycle)) * 2;
+
+            c.translate(0, -bobY);
+
+            // LEGS (Articulated trousers & shoes)
+            c.lineWidth = 5.5;
+            c.lineCap = "round";
+            c.strokeStyle = isNPC ? "#1e1b4b" : "#1f2937";
+            // Left leg
+            c.beginPath();
+            c.moveTo(-4, -14);
+            c.lineTo(-5 + legSwing * 0.5, -1);
+            c.stroke();
+            // Right leg
+            c.beginPath();
+            c.moveTo(4, -14);
+            c.lineTo(5 - legSwing * 0.5, -1);
+            c.stroke();
+
+            // Back Arm
+            c.lineWidth = 4.5;
+            c.strokeStyle = skinColor;
+            c.beginPath();
+            c.moveTo(-7 * facing, -30);
+            c.lineTo(-11 * facing - armSwing * 0.4, isPunished ? -44 : -18);
+            c.stroke();
+
+            // TORSO (Realistic jacket / prisoner shirt / royal robe)
+            c.fillStyle = color;
+            c.strokeStyle = "#09090b";
+            c.lineWidth = 1.4;
+            c.beginPath();
+            c.roundRect(-9, -34, 18, 21, 5);
+            c.fill();
+            c.stroke();
+
+            // Corporate Employee Lanyard & Badge for NPCs or Player
+            if (isNPC || isPlayer) {
+                // Lanyard strap
+                c.strokeStyle = isNPC ? "#facc15" : "#38bdf8";
+                c.lineWidth = 1.3;
+                c.beginPath();
+                c.moveTo(-4, -33);
+                c.lineTo(0, -23);
+                c.lineTo(4, -33);
+                c.stroke();
+                // ID Card Badge
+                c.fillStyle = "#ffffff";
+                c.fillRect(-3, -23, 6, 7);
+                c.fillStyle = "#dc2626";
+                c.fillRect(-3, -23, 6, 2);
+            }
+
+            // Front Arm
+            c.lineWidth = 4.5;
+            c.strokeStyle = skinColor;
+            c.beginPath();
+            c.moveTo(7 * facing, -30);
+            c.lineTo(11 * facing + armSwing * 0.4, isPunished ? -44 : -18);
+            c.stroke();
+
+            // HEAD & SPECIAL NPC HEADGEAR
+            const headY = -44;
+            if (npcLook === "dautrau") {
+                // Bull Head Coordinator
+                c.fillStyle = "#57534e";
+                c.beginPath();
+                c.arc(0, headY, 10.5, 0, Math.PI * 2);
+                c.fill();
+                c.stroke();
+                // Bull Horns
+                c.strokeStyle = "#fde047";
+                c.lineWidth = 3;
+                c.beginPath();
+                c.moveTo(-8, headY - 5);
+                c.quadraticCurveTo(-17, headY - 14, -12, headY - 19);
+                c.moveTo(8, headY - 5);
+                c.quadraticCurveTo(17, headY - 14, 12, headY - 19);
+                c.stroke();
+                // Gold nose ring
+                c.strokeStyle = "#facc15";
+                c.lineWidth = 1.5;
+                c.beginPath();
+                c.arc(0, headY + 4, 3, 0, Math.PI * 2);
+                c.stroke();
+            } else if (npcLook === "matngua") {
+                // Horse Face Coordinator
+                c.fillStyle = "#78350f";
+                c.beginPath();
+                c.ellipse(2 * facing, headY, 11, 8.5, 0, 0, Math.PI * 2);
+                c.fill();
+                c.stroke();
+                // Mane & Ears
+                c.fillStyle = "#1c1917";
+                c.fillRect(-5, headY - 13, 10, 5);
+            } else {
+                // Human / Deity / Demon Head
+                c.fillStyle = npcLook === "nguctot" ? "#f87171" : skinColor;
+                c.strokeStyle = "#09090b";
+                c.lineWidth = 1.4;
+                c.beginPath();
+                c.arc(0, headY, 9.5, 0, Math.PI * 2);
+                c.fill();
+                c.stroke();
+
+                // Hair & Hats
+                if (npcLook === "diemvuong") {
+                    // Imperial Crown of Diêm Vương
+                    c.fillStyle = "#facc15";
+                    c.fillRect(-10, headY - 15, 20, 7);
+                    c.fillStyle = "#dc2626";
+                    c.fillRect(-6, headY - 18, 12, 4);
+                    // Beard
+                    c.strokeStyle = "#18181b";
+                    c.lineWidth = 2;
+                    c.beginPath();
+                    c.moveTo(0, headY + 7);
+                    c.lineTo(2 * facing, headY + 16);
+                    c.stroke();
+                } else if (npcLook === "phanquan") {
+                    // Phán Quan Legal Judge Hat (Ô Sa Mão)
+                    c.fillStyle = "#1e1b4b";
+                    c.fillRect(-9, headY - 15, 18, 7);
+                    c.fillStyle = "#facc15";
+                    c.fillRect(-16, headY - 12, 32, 2.5);
+                } else if (npcLook === "vothuong") {
+                    // Tall Hắc Bạch Vô Thường Hat
+                    c.fillStyle = "#f8fafc";
+                    c.fillRect(-7, headY - 26, 14, 18);
+                    c.strokeStyle = "#09090b";
+                    c.strokeRect(-7, headY - 26, 14, 18);
+                } else if (npcLook === "manhba") {
+                    // Mạnh Bà Silver Hair Bun
+                    c.fillStyle = "#e2e8f0";
+                    c.beginPath();
+                    c.arc(0, headY - 11, 6, 0, Math.PI * 2);
+                    c.fill();
+                } else if (npcLook === "nguctot") {
+                    // Demon Horns
+                    c.fillStyle = "#fbbf24";
+                    c.beginPath();
+                    c.moveTo(-6, headY - 8);
+                    c.lineTo(-10, headY - 16);
+                    c.lineTo(-2, headY - 9);
+                    c.moveTo(6, headY - 8);
+                    c.lineTo(10, headY - 16);
+                    c.lineTo(2, headY - 9);
+                    c.fill();
+                } else {
+                    // Realistic Stylized Hair
+                    c.fillStyle = "#18181b";
+                    c.beginPath();
+                    c.arc(0, headY - 2, 9.8, Math.PI, Math.PI * 2);
+                    c.fill();
+                }
+
+                // Facial Features (Eyes & Mouth)
+                c.fillStyle = "#09090b";
+                const eyeX = 3 * facing;
+                c.beginPath();
+                c.arc(eyeX - 2.5, headY - 1, 1.3, 0, Math.PI * 2);
+                c.arc(eyeX + 2.5, headY - 1, 1.3, 0, Math.PI * 2);
+                c.fill();
+
+                // Mouth expression (Screaming in "Đớn" if punished, else neutral/smile)
+                c.beginPath();
+                if (isPunished) {
+                    c.fillStyle = "#991b1b";
+                    c.arc(eyeX, headY + 4, 3.2, 0, Math.PI * 2);
+                    c.fill();
+                    // Sweat drop
+                    c.fillStyle = "#38bdf8";
+                    c.beginPath();
+                    c.arc(-6, headY - 3, 2, 0, Math.PI * 2);
+                    c.fill();
+                } else {
+                    c.strokeStyle = "#09090b";
+                    c.lineWidth = 1.2;
+                    c.arc(eyeX, headY + 3, 2.2, 0, Math.PI);
+                    c.stroke();
+                }
+            }
+
+            // Player Indicator Arrow & Name Tag
+            if (name) {
+                const tagY = npcLook === "vothuong" ? -78 : -64;
+                c.font = isPlayer || isNPC ? "bold 11px 'Be Vietnam Pro'" : "500 10px 'Be Vietnam Pro'";
+                c.textAlign = "center";
+
+                if (isPlayer) {
+                    c.fillStyle = "#facc15";
+                    c.fillText("▼ BẠN ▼", 0, tagY - 13);
+                }
+
+                // Name Plate Background
+                const textW = c.measureText(name).width + 10;
+                c.fillStyle = isNPC ? "rgba(124, 45, 18, 0.9)" : (isPlayer ? "rgba(220, 38, 38, 0.9)" : "rgba(9, 9, 11, 0.72)");
+                c.beginPath();
+                c.roundRect(-textW / 2, tagY - 10, textW, 14, 4);
+                c.fill();
+
+                c.fillStyle = isNPC ? "#fde047" : (isPlayer ? "#ffffff" : "#e2e8f0");
+                c.fillText(name, 0, tagY);
+
+                if (title && (isPlayer || isNPC)) {
+                    c.font = "bold 9px 'Be Vietnam Pro'";
+                    c.fillStyle = isNPC ? "#38bdf8" : "#fcd34d";
+                    c.fillText(title, 0, tagY + 11);
+                }
+            }
+
+            // Chat Bubble above head
+            if (chatText) {
+                const bubbleY = -86;
+                c.font = "600 10.5px 'Be Vietnam Pro'";
+                const maxW = Math.min(230, c.measureText(chatText).width + 16);
+                c.fillStyle = "rgba(255, 255, 255, 0.95)";
+                c.strokeStyle = "#dc2626";
+                c.lineWidth = 1.5;
+                c.beginPath();
+                c.roundRect(-maxW / 2, bubbleY - 18, maxW, 20, 8);
+                c.fill();
+                c.stroke();
+
+                c.fillStyle = "#09090b";
+                c.textAlign = "center";
+                const clipped = chatText.length > 36 ? chatText.slice(0, 35) + "…" : chatText;
+                c.fillText(clipped, 0, bubbleY - 4);
+            }
+
+            c.restore();
+        }
+
+        /**
+         * Renders the iconic centerpiece torture apparatus for each of the 21 zones
+         */
+        function drawZoneApparatus(c, zone, centerX, centerY, time) {
+            c.save();
+            c.translate(centerX, centerY);
+
+            // Glowing Ritual Platform under the apparatus
+            const pulse = 0.75 + Math.sin(time * 0.05) * 0.25;
+            const radGrad = c.createRadialGradient(0, 10, 15, 0, 10, 155);
+            radGrad.addColorStop(0, zone.accentColor + "55");
+            radGrad.addColorStop(0.6, zone.themeColor + "33");
+            radGrad.addColorStop(1, "rgba(0,0,0,0)");
+            c.fillStyle = radGrad;
+            c.beginPath();
+            c.ellipse(0, 10, 155, 78, 0, 0, Math.PI * 2);
+            c.fill();
+
+            // Octagonal Corporate Hell Platform
+            c.strokeStyle = zone.accentColor;
+            c.lineWidth = 2.5;
+            c.fillStyle = "rgba(15, 10, 18, 0.85)";
+            c.beginPath();
+            c.ellipse(0, 10, 120, 56, 0, 0, Math.PI * 2);
+            c.fill();
+            c.stroke();
+
+            const t = zone.apparatusType;
+
+            if (t === "mirror_checkin" || t === "karma_mirror") {
+                // Giant Nghiệt Kính Đài LED Mirror Frame
+                c.fillStyle = "#451a03";
+                c.strokeStyle = "#facc15";
+                c.lineWidth = 4;
+                c.beginPath();
+                c.roundRect(-65, -110, 130, 95, 12);
+                c.fill();
+                c.stroke();
+
+                // Mirror Screen scanning waves
+                const scrGrad = c.createLinearGradient(-55, -100, 55, -25);
+                scrGrad.addColorStop(0, "#0284c7");
+                scrGrad.addColorStop(0.5, "#38bdf8");
+                scrGrad.addColorStop(1, "#1e1b4b");
+                c.fillStyle = scrGrad;
+                c.fillRect(-55, -100, 110, 75);
+
+                // Scanline
+                const scanY = -98 + ((time * 1.5) % 70);
+                c.strokeStyle = "#facc15";
+                c.lineWidth = 2;
+                c.beginPath();
+                c.moveTo(-55, scanY);
+                c.lineTo(55, scanY);
+                c.stroke();
+
+                c.fillStyle = "#ffffff";
+                c.font = "bold 11px 'Be Vietnam Pro'";
+                c.textAlign = "center";
+                c.fillText("NGHIỆT KÍNH ĐÀI 8K", 0, -65);
+                c.font = "10px 'Be Vietnam Pro'";
+                c.fillStyle = "#fde047";
+                c.fillText("Đang quét Sổ Sinh Tử...", 0, -48);
+            } else if (t === "oil_cauldron" || t === "blood_pool" || t === "volcano") {
+                // Giant Bubbling Cauldron (Vạc Dầu 1,000,000 Đớn / Ao Huyết / Núi Lửa)
+                c.fillStyle = "#27272a";
+                c.strokeStyle = "#f59e0b";
+                c.lineWidth = 4;
+                c.beginPath();
+                c.arc(0, -10, 68, 0, Math.PI);
+                c.fill();
+                c.stroke();
+
+                // Boiling Liquid Rim
+                c.fillStyle = t === "blood_pool" ? "#dc2626" : (t === "volcano" ? "#ea580c" : "#facc15");
+                c.beginPath();
+                c.ellipse(0, -10, 66, 24, 0, 0, Math.PI * 2);
+                c.fill();
+
+                // Animated Bubbles
+                for (let b = 0; b < 6; b++) {
+                    const bx = Math.sin(time * 0.07 + b * 1.3) * 42;
+                    const by = -10 + Math.cos(time * 0.09 + b) * 10;
+                    const br = 4 + Math.abs(Math.sin(time * 0.1 + b)) * 6;
+                    c.fillStyle = "#fef08a";
+                    c.beginPath();
+                    c.arc(bx, by, br, 0, Math.PI * 2);
+                    c.fill();
+                }
+
+                // Fire underneath
+                for (let f = -45; f <= 45; f += 18) {
+                    const fh = 15 + Math.sin(time * 0.2 + f) * 8;
+                    c.fillStyle = "#ef4444";
+                    c.beginPath();
+                    c.moveTo(f - 10, 48);
+                    c.lineTo(f, 48 - fh);
+                    c.lineTo(f + 10, 48);
+                    c.fill();
+                }
+            } else if (t === "keyboard_speaker_19") {
+                // TẦNG 19 SPECIAL: Giant Spiked Mechanical Keyboard & 50,000W Karma Megaphones
+                // Giant Spiked Keyboard on floor
+                c.fillStyle = "#3b0764";
+                c.strokeStyle = "#f0abfc";
+                c.lineWidth = 3;
+                c.beginPath();
+                c.roundRect(-85, -35, 170, 58, 10);
+                c.fill();
+                c.stroke();
+
+                // Glowing RGB Keycaps with Spikes
+                for (let row = 0; row < 3; row++) {
+                    for (let col = 0; col < 8; col++) {
+                        const kx = -74 + col * 19;
+                        const ky = -28 + row * 16;
+                        const activeKey = ((Math.floor(time * 0.15) + row + col) % 7 === 0);
+                        c.fillStyle = activeKey ? "#f43f5e" : "#1e1b4b";
+                        c.fillRect(kx, ky, 15, 12);
+                        // Spike on key
+                        c.fillStyle = "#fde047";
+                        c.beginPath();
+                        c.moveTo(kx + 4, ky + 4);
+                        c.lineTo(kx + 7.5, ky - 3);
+                        c.lineTo(kx + 11, ky + 4);
+                        c.fill();
+                    }
+                }
+
+                // Twin 50,000W Megaphones broadcasting gossip
+                const wave = Math.abs(Math.sin(time * 0.15)) * 8;
+                c.fillStyle = "#dc2626";
+                c.beginPath();
+                c.arc(-85, -75, 18 + wave * 0.3, 0, Math.PI * 2);
+                c.arc(85, -75, 18 + wave * 0.3, 0, Math.PI * 2);
+                c.fill();
+
+                c.fillStyle = "#ffffff";
+                c.font = "bold 11px 'Be Vietnam Pro'";
+                c.textAlign = "center";
+                c.fillText("⌨️ BÀN PHÍM GAI SẮT & LOA PHÓNG THANH NGHIỆP QUẬT 50.000W 🔊", 0, -52);
+            } else if (t === "manh_ba_station") {
+                // Mạnh Bà Tea & Soup Pavilion
+                c.fillStyle = "#115e59";
+                c.strokeStyle = "#2dd4bf";
+                c.lineWidth = 3;
+                c.beginPath();
+                c.roundRect(-75, -60, 150, 55, 12);
+                c.fill();
+                c.stroke();
+
+                // Glowing Soup Cauldron
+                c.fillStyle = "#5eead4";
+                c.beginPath();
+                c.arc(0, -45, 24, 0, Math.PI * 2);
+                c.fill();
+
+                c.fillStyle = "#fde047";
+                c.font = "bold 12px 'Be Vietnam Pro'";
+                c.textAlign = "center";
+                c.fillText("🍵 QUẦY CANH MẠNH BÀ — FORMAT THẺ NHỚ", 0, -75);
+            } else {
+                // Mechanical / Blade / Pillar / Mill Apparatus for Floors 1-8, 10-18
+                const animShift = Math.sin(time * 0.08) * 14;
+                c.fillStyle = "#3f3f46";
+                c.strokeStyle = zone.accentColor;
+                c.lineWidth = 3;
+                c.beginPath();
+                c.roundRect(-65, -85, 130, 75, 8);
+                c.fill();
+                c.stroke();
+
+                // Moving Torture Piston / Blade / Pillar
+                c.fillStyle = zone.accentColor;
+                c.beginPath();
+                c.roundRect(-45, -70 + animShift * 0.5, 90, 26, 6);
+                c.fill();
+
+                c.fillStyle = "#ffffff";
+                c.font = "bold 11px 'Be Vietnam Pro'";
+                c.textAlign = "center";
+                c.fillText(zone.punishmentName.toUpperCase(), 0, -95);
+            }
+
+            // KPI Đớn Rate Floating Label
+            c.fillStyle = "rgba(0,0,0,0.8)";
+            c.beginPath();
+            c.roundRect(-95, 34, 190, 22, 6);
+            c.fill();
+            c.fillStyle = "#facc15";
+            c.font = "bold 11px 'Be Vietnam Pro'";
+            c.textAlign = "center";
+            c.fillText(`⚡ Định mức: ${zone.donRate.toLocaleString("vi-VN")} ĐỚN / nhịp`, 0, 49);
+
+            c.restore();
+        }
+
+        // =====================================================================
+        // 7. MAIN GAME UPDATE & RENDER LOOP (60 FPS)
+        // =====================================================================
+        let tick = 0;
+
+        function updateGame() {
+            tick++;
+            const zone = ZONES[state.currentZoneId];
+
+            // 1. Player Movement (WASD / Arrows / Click Target)
+            let dx = 0;
+            let dy = 0;
+            if (state.keys["KeyW"] || state.keys["ArrowUp"]) dy -= 1;
+            if (state.keys["KeyS"] || state.keys["ArrowDown"]) dy += 1;
+            if (state.keys["KeyA"] || state.keys["ArrowLeft"]) dx -= 1;
+            if (state.keys["KeyD"] || state.keys["ArrowRight"]) dx += 1;
+
+            const speedMult = state.ownedVangMa.has("sh_bike") ? 1.45 : 1.0;
+            const actualSpeed = player.speed * speedMult;
+
+            if (dx !== 0 || dy !== 0) {
+                state.mouseTarget = null;
+                const len = Math.hypot(dx, dy);
+                player.x += (dx / len) * actualSpeed;
+                player.y += (dy / len) * actualSpeed;
+                if (dx !== 0) player.facing = dx > 0 ? 1 : -1;
+                player.animFrame += 0.24;
+            } else if (state.mouseTarget) {
+                const mdx = state.mouseTarget.x - player.x;
+                const mdy = state.mouseTarget.y - player.y;
+                const dist = Math.hypot(mdx, mdy);
+                if (dist > 6) {
+                    player.x += (mdx / dist) * actualSpeed;
+                    player.y += (mdy / dist) * actualSpeed;
+                    if (Math.abs(mdx) > 1) player.facing = mdx > 0 ? 1 : -1;
+                    player.animFrame += 0.24;
+                } else {
+                    state.mouseTarget = null;
+                }
+            } else {
+                player.animFrame *= 0.85;
+            }
+
+            // Portal Gate Check (Left Gate = Previous Floor, Right Gate = Next Floor)
+            if (player.x < 65 && Math.abs(player.y - ZONE_HEIGHT / 2) < 85) {
+                if (state.currentZoneId > 0) {
+                    player.x = ZONE_WIDTH - 110;
+                    stepZone(-1);
+                } else {
+                    player.x = 75;
+                }
+            } else if (player.x > ZONE_WIDTH - 65 && Math.abs(player.y - ZONE_HEIGHT / 2) < 85) {
+                if (state.currentZoneId < ZONES.length - 1) {
+                    player.x = 110;
+                    stepZone(1);
+                } else {
+                    player.x = ZONE_WIDTH - 75;
+                }
+            }
+
+            // Clamp player inside zone boundaries
+            player.x = Math.max(55, Math.min(ZONE_WIDTH - 55, player.x));
+            player.y = Math.max(115, Math.min(ZONE_HEIGHT - 60, player.y));
+
+            if (player.chatTimer > 0) player.chatTimer--;
+
+            // 2. Update 400 - 500 Simulated Crowd Souls
+            const activeCount = state.targetCrowdCount;
+            for (let i = 0; i < activeCount; i++) {
+                const s = crowdSouls[i];
+                if (s.zoneId === state.currentZoneId) {
+                    if (!s.isPunished) {
+                        const sdx = s.targetX - s.x;
+                        const sdy = s.targetY - s.y;
+                        const dist = Math.hypot(sdx, sdy);
+                        if (dist > 8) {
+                            s.x += (sdx / dist) * s.speed;
+                            s.y += (sdy / dist) * s.speed;
+                            s.facing = sdx >= 0 ? 1 : -1;
+                        } else if (Math.random() < 0.02) {
+                            s.targetX = 110 + Math.random() * (ZONE_WIDTH - 220);
+                            s.targetY = 150 + Math.random() * (ZONE_HEIGHT - 230);
+                        }
+                    }
+                    // Occasional funny chat bubble
+                    if (s.chatTimer > 0) {
+                        s.chatTimer--;
+                        if (s.chatTimer === 0) s.chatText = "";
+                    } else if (Math.random() < 0.0018) {
+                        s.chatText = FUNNY_CHATS[Math.floor(Math.random() * FUNNY_CHATS.length)];
+                        s.chatTimer = 210;
+                    }
+                } else if (Math.random() < 0.002) {
+                    // Souls occasionally take the elevator between the 19 floors
+                    s.zoneId = Math.floor(Math.random() * ZONES.length);
+                }
+            }
+
+            // 3. Ambient Hell Embers & Floating Damage Numbers
+            if (state.particles.length < 45) {
+                state.particles.push({
+                    x: Math.random() * ZONE_WIDTH,
+                    y: ZONE_HEIGHT + 10,
+                    vy: -0.8 - Math.random() * 1.8,
+                    vx: (Math.random() - 0.5) * 0.8,
+                    size: 2 + Math.random() * 3.5,
+                    color: zone.accentColor,
+                    alpha: 0.85
+                });
+            }
+            for (let i = state.particles.length - 1; i >= 0; i--) {
+                const p = state.particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.alpha -= 0.006;
+                if (p.alpha <= 0 || p.y < 0) state.particles.splice(i, 1);
+            }
+
+            for (let i = state.floatingTexts.length - 1; i >= 0; i--) {
+                const ft = state.floatingTexts[i];
+                ft.y -= 1.1;
+                ft.life--;
+                if (ft.life <= 0) state.floatingTexts.splice(i, 1);
+            }
+
+            // 3b. Update Falling Vàng Mã Offerings (during Xả Kho Vàng Mã event)
+            for (let i = state.fallingOfferings.length - 1; i >= 0; i--) {
+                const item = state.fallingOfferings[i];
+                if (item.y < item.targetY) {
+                    item.y += item.vy;
+                    item.x += Math.sin(tick * 0.08 + i) * 0.7;
+                }
+                item.life--;
+                // Check if player walks near the offering to collect it
+                if (Math.hypot(player.x - item.x, player.y - item.y) < 48) {
+                    collectPaperOffering(i);
+                    continue;
+                }
+                if (item.life <= 0) {
+                    state.fallingOfferings.splice(i, 1);
+                }
+            }
+
+            // 3c. Update X3 KPI Đớn Event Countdown Badge
+            const x3Badge = document.getElementById("x3EventBadge");
+            if (state.x3DonUntil > Date.now()) {
+                const remSec = Math.ceil((state.x3DonUntil - Date.now()) / 1000);
+                if (x3Badge) {
+                    x3Badge.classList.remove("hidden");
+                    document.getElementById("x3TimerText").textContent = `${remSec}s`;
+                }
+            } else if (x3Badge && !x3Badge.classList.contains("hidden")) {
+                x3Badge.classList.add("hidden");
+            }
+
+            // 4. Camera Smooth Follow
+            const targetCamX = player.x - canvas.width / 2;
+            const targetCamY = player.y - canvas.height / 2;
+            state.camera.x += (targetCamX - state.camera.x) * 0.14;
+            state.camera.y += (targetCamY - state.camera.y) * 0.14;
+
+            // Clamp camera when screen is smaller than zone, or center if larger
+            if (canvas.width < ZONE_WIDTH) {
+                state.camera.x = Math.max(0, Math.min(ZONE_WIDTH - canvas.width, state.camera.x));
+            } else {
+                state.camera.x = -(canvas.width - ZONE_WIDTH) / 2;
+            }
+            if (canvas.height < ZONE_HEIGHT) {
+                state.camera.y = Math.max(0, Math.min(ZONE_HEIGHT - canvas.height, state.camera.y));
+            } else {
+                state.camera.y = -(canvas.height - ZONE_HEIGHT) / 2;
+            }
+        }
+
+        function renderGame() {
+            const zone = ZONES[state.currentZoneId];
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Background Void fill
+            ctx.fillStyle = "#07040a";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.save();
+            ctx.translate(-state.camera.x, -state.camera.y);
+
+            // 1. Floor Base & Hell Corporate Tile Grid
+            const floorGrad = ctx.createRadialGradient(
+                ZONE_WIDTH / 2, ZONE_HEIGHT / 2, 80,
+                ZONE_WIDTH / 2, ZONE_HEIGHT / 2, ZONE_WIDTH * 0.7
+            );
+            floorGrad.addColorStop(0, zone.themeColor);
+            floorGrad.addColorStop(1, zone.floorColor);
+            ctx.fillStyle = floorGrad;
+            ctx.beginPath();
+            ctx.roundRect(20, 70, ZONE_WIDTH - 40, ZONE_HEIGHT - 90, 28);
+            ctx.fill();
+
+            // Subtle Grid Lines
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.04)";
+            ctx.lineWidth = 1;
+            for (let gx = 80; gx < ZONE_WIDTH - 40; gx += 60) {
+                ctx.beginPath();
+                ctx.moveTo(gx, 70);
+                ctx.lineTo(gx, ZONE_HEIGHT - 20);
+                ctx.stroke();
+            }
+            for (let gy = 120; gy < ZONE_HEIGHT - 20; gy += 60) {
+                ctx.beginPath();
+                ctx.moveTo(20, gy);
+                ctx.lineTo(ZONE_WIDTH - 20, gy);
+                ctx.stroke();
+            }
+
+            // Outer Wall Border
+            ctx.strokeStyle = zone.accentColor;
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.roundRect(20, 70, ZONE_WIDTH - 40, ZONE_HEIGHT - 90, 28);
+            ctx.stroke();
+
+            // 2. Top Corporate Gate Banner inside the Zone
+            ctx.fillStyle = "rgba(12, 8, 16, 0.92)";
+            ctx.strokeStyle = "#facc15";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.roundRect(ZONE_WIDTH / 2 - 290, 84, 580, 56, 14);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = "#fde047";
+            ctx.font = "900 15px 'Be Vietnam Pro'";
+            ctx.textAlign = "center";
+            ctx.fillText(`${zone.code}: ${zone.name.toUpperCase()}`, ZONE_WIDTH / 2, 108);
+            ctx.fillStyle = "#e2e8f0";
+            ctx.font = "500 11px 'Be Vietnam Pro'";
+            ctx.fillText(`ĐỊA NGỤC CORP • "Chết Là Còn — Sự nghiệp của bạn là sự nghiệp của chúng tôi"`, ZONE_WIDTH / 2, 128);
+
+            // 3. Left & Right Portal Gates to Neighboring Floors
+            if (state.currentZoneId > 0) {
+                drawPortalGate(ctx, 48, ZONE_HEIGHT / 2, `◄ ${ZONES[state.currentZoneId - 1].code}`, "#38bdf8");
+            }
+            if (state.currentZoneId < ZONES.length - 1) {
+                drawPortalGate(ctx, ZONE_WIDTH - 48, ZONE_HEIGHT / 2, `${ZONES[state.currentZoneId + 1].code} ►`, "#facc15");
+            }
+
+            // 4. Centerpiece Torture Apparatus for this Floor
+            drawZoneApparatus(ctx, zone, ZONE_WIDTH / 2, ZONE_HEIGHT / 2 - 10, tick);
+
+            // 5. Collect all Y-sorted entities (Crowd Souls on this floor + Remote Firebase Players + Floor NPC + Local Player)
+            const renderEntities = [];
+
+            // Floor Officer NPC
+            const npcX = ZONE_WIDTH / 2 + 190;
+            const npcY = ZONE_HEIGHT / 2 - 20;
+            renderEntities.push({
+                y: npcY,
+                draw: () => {
+                    drawArticulatedCharacter(ctx, npcX, npcY, {
+                        name: zone.npcName,
+                        title: zone.npcRole,
+                        color: "#7c2d12",
+                        skinColor: "#fde047",
+                        facing: -1,
+                        walkCycle: tick * 0.04,
+                        isNPC: true,
+                        npcLook: zone.npcLook,
+                        chatText: (tick % 360 < 220) ? zone.npcQuote.slice(0, 42) + "..." : "",
+                        scale: 1.15
+                    });
+                }
+            });
+
+            // Simulated Crowd Souls on this floor
+            const activeCount = state.targetCrowdCount;
+            for (let i = 0; i < activeCount; i++) {
+                const s = crowdSouls[i];
+                if (s.zoneId === state.currentZoneId) {
+                    renderEntities.push({
+                        y: s.y,
+                        draw: () => {
+                            drawArticulatedCharacter(ctx, s.x, s.y, {
+                                name: s.name,
+                                color: s.color,
+                                skinColor: s.skinColor,
+                                facing: s.facing,
+                                walkCycle: tick * 0.14 + s.animOffset,
+                                isPunished: s.isPunished,
+                                chatText: s.chatText
+                            });
+                        }
+                    });
+                }
+            }
+
+            // Real Firebase Multiplayer Souls on this floor
+            state.remotePlayers.forEach((rp) => {
+                if (rp.zoneId === state.currentZoneId) {
+                    renderEntities.push({
+                        y: rp.y || 300,
+                        draw: () => {
+                            drawArticulatedCharacter(ctx, rp.x || 400, rp.y || 300, {
+                                name: rp.name || "Linh Hồn Online",
+                                title: rp.title || "Đồng Nghiệp Chịu Phạt",
+                                color: rp.color || "#3b82f6",
+                                facing: rp.facing || 1,
+                                walkCycle: tick * 0.12,
+                                chatText: rp.chatText || ""
+                            });
+                        }
+                    });
+                }
+            });
+
+            // Local Player
+            renderEntities.push({
+                y: player.y,
+                draw: () => {
+                    drawArticulatedCharacter(ctx, player.x, player.y, {
+                        name: player.name,
+                        title: player.title,
+                        color: player.color,
+                        skinColor: player.skinColor,
+                        facing: player.facing,
+                        walkCycle: player.animFrame,
+                        isPlayer: true,
+                        isPunished: player.isBeingPunished,
+                        chatText: player.chatTimer > 0 ? player.chatText : "",
+                        hasAura: state.ownedVangMa.size > 0,
+                        scale: 1.12
+                    });
+                }
+            });
+
+            // Depth-sort by Y coordinate for true 2.5D top-down RPG perspective
+            renderEntities.sort((a, b) => a.y - b.y);
+            for (let i = 0; i < renderEntities.length; i++) {
+                renderEntities[i].draw();
+            }
+
+            // Render Collectible Vàng Mã Offerings on the floor
+            for (let i = 0; i < state.fallingOfferings.length; i++) {
+                const item = state.fallingOfferings[i];
+                ctx.save();
+                ctx.translate(item.x, item.y);
+                const bounce = Math.sin(tick * 0.15 + i) * 4;
+                // Golden glow circle
+                ctx.fillStyle = "rgba(250, 204, 21, 0.28)";
+                ctx.beginPath();
+                ctx.arc(0, bounce, 22, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = "#facc15";
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                ctx.font = "20px 'Be Vietnam Pro'";
+                ctx.textAlign = "center";
+                ctx.fillText(item.emoji, 0, bounce + 6);
+
+                ctx.font = "bold 10px 'Be Vietnam Pro'";
+                ctx.fillStyle = "#fde047";
+                ctx.fillText(item.label, 0, bounce - 18);
+                ctx.restore();
+            }
+
+            // Click Move Indicator
+            if (state.mouseTarget) {
+                ctx.strokeStyle = "#facc15";
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(state.mouseTarget.x, state.mouseTarget.y, 10 + Math.sin(tick * 0.2) * 3, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // Ambient Embers
+            for (let i = 0; i < state.particles.length; i++) {
+                const p = state.particles[i];
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = Math.max(0, p.alpha);
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+
+            // Floating Đớn KPI Numbers
+            for (let i = 0; i < state.floatingTexts.length; i++) {
+                const ft = state.floatingTexts[i];
+                ctx.font = "900 14px 'Be Vietnam Pro'";
+                ctx.fillStyle = ft.color;
+                ctx.textAlign = "center";
+                ctx.fillText(ft.text, ft.x, ft.y);
+            }
+
+            ctx.restore();
+
+            // Render Minimap Radar showing all 400-500 players across the 21 zones
+            renderMinimapRadar();
+        }
+
+        function drawPortalGate(c, x, y, label, color) {
+            c.save();
+            c.translate(x, y);
+            const grad = c.createRadialGradient(0, 0, 5, 0, 0, 44);
+            grad.addColorStop(0, color);
+            grad.addColorStop(1, "rgba(0,0,0,0)");
+            c.fillStyle = grad;
+            c.beginPath();
+            c.ellipse(0, 0, 26, 56, 0, 0, Math.PI * 2);
+            c.fill();
+
+            c.strokeStyle = color;
+            c.lineWidth = 2.5;
+            c.beginPath();
+            c.ellipse(0, 0, 18, 46, 0, 0, Math.PI * 2);
+            c.stroke();
+
+            c.fillStyle = "#ffffff";
+            c.font = "bold 10px 'Be Vietnam Pro'";
+            c.textAlign = "center";
+            c.fillText(label, 0, -54);
+            c.restore();
+        }
+
+        function renderMinimapRadar() {
+            minimapCtx.clearRect(0, 0, minimapCanvas.width, minimapCanvas.height);
+            const mw = minimapCanvas.width;
+            const mh = minimapCanvas.height;
+
+            // Draw current zone box
+            minimapCtx.strokeStyle = "rgba(239, 68, 68, 0.5)";
+            minimapCtx.strokeRect(4, 4, mw - 8, mh - 8);
+
+            // Draw Apparatus & NPC dot
+            minimapCtx.fillStyle = "#38bdf8";
+            minimapCtx.fillRect(mw / 2 + 24, mh / 2 - 4, 5, 5);
+
+            // Draw Crowd Souls on current floor (bright red) and other floors (faint dots along bottom bar)
+            const activeCount = state.targetCrowdCount;
+            for (let i = 0; i < activeCount; i++) {
+                const s = crowdSouls[i];
+                if (s.zoneId === state.currentZoneId) {
+                    const rx = (s.x / ZONE_WIDTH) * (mw - 12) + 6;
+                    const ry = (s.y / ZONE_HEIGHT) * (mh - 22) + 6;
+                    minimapCtx.fillStyle = "#ef4444";
+                    minimapCtx.fillRect(rx, ry, 2.5, 2.5);
+                }
+            }
+
+            // Draw Local Player Dot
+            const px = (player.x / ZONE_WIDTH) * (mw - 12) + 6;
+            const py = (player.y / ZONE_HEIGHT) * (mh - 22) + 6;
+            minimapCtx.fillStyle = "#facc15";
+            minimapCtx.beginPath();
+            minimapCtx.arc(px, py, 4, 0, Math.PI * 2);
+            minimapCtx.fill();
+
+            // Bottom strip showing 21 zones progress
+            const stripW = (mw - 12) / ZONES.length;
+            for (let z = 0; z < ZONES.length; z++) {
+                minimapCtx.fillStyle = z === state.currentZoneId
+                    ? "#facc15"
+                    : (state.completedZones.has(z) ? "#22c55e" : "rgba(255,255,255,0.18)");
+                minimapCtx.fillRect(6 + z * stripW, mh - 10, stripW - 1.5, 6);
+            }
+        }
+
+        // =====================================================================
+        // 8. FLOOR NAVIGATION, MINI-GAME TORTURE & DPM TRACKING
+        // =====================================================================
+        function goToZone(zoneId) {
+            state.currentZoneId = Math.max(0, Math.min(ZONES.length - 1, zoneId));
+            const z = ZONES[state.currentZoneId];
+            playSound("elevator");
+
+            // Update HUD Texts
+            document.getElementById("hudFloorBadge").textContent = z.id === 0 ? "SẢNH" : (z.id === 20 ? "RESET" : `T${z.id}`);
+            document.getElementById("zoneTag").textContent = z.code;
+            document.getElementById("zoneName").textContent = z.name.toUpperCase();
+            document.getElementById("zoneDesc").textContent = z.sin;
+            document.getElementById("interactTitle").textContent = `${z.code}: ${z.name}`;
+            document.getElementById("interactSubtitle").textContent = `Hình phạt: ${z.punishmentName} (${z.donRate.toLocaleString("vi-VN")} Đớn)`;
+            document.getElementById("bottomFloorStatus").textContent = `Đang ở: ${z.code} - ${z.shortName}`;
+            document.getElementById("radarFloorText").textContent = `${z.code} (${countSoulsInZone(z.id)} người tại tầng)`;
+
+            closeModal("elevatorModal");
+            showToast(`🛗 Thang Máy Địa Ngục Corp: Đã đến ${z.code} — ${z.name}!`, "amber");
+            syncPlayerToCloud();
+        }
+
+        function countSoulsInZone(zid) {
+            let c = 1; // local player
+            for (let i = 0; i < state.targetCrowdCount; i++) {
+                if (crowdSouls[i].zoneId === zid) c++;
+            }
+            return c;
+        }
+
+        window.stepZone = function(delta) {
+            const next = state.currentZoneId + delta;
+            if (next >= 0 && next < ZONES.length) {
+                goToZone(next);
+            }
+        };
+
+        window.summonCrowdHere = function() {
+            let moved = 0;
+            for (let i = 0; i < state.targetCrowdCount; i++) {
+                if (moved < 95 && crowdSouls[i].zoneId !== state.currentZoneId) {
+                    crowdSouls[i].zoneId = state.currentZoneId;
+                    crowdSouls[i].x = 120 + Math.random() * (ZONE_WIDTH - 240);
+                    crowdSouls[i].y = 150 + Math.random() * (ZONE_HEIGHT - 240);
+                    moved++;
+                }
+            }
+            playSound("gong");
+            document.getElementById("radarFloorText").textContent = `${ZONES[state.currentZoneId].code} (${countSoulsInZone(state.currentZoneId)} người tại tầng)`;
+            showToast(`🐂 Đầu Trâu Mặt Ngựa vừa điều phối thêm ${moved} tội nhân xuống tầng của bạn!`, "emerald");
+        };
+
+        window.updateCrowdCount = function(val) {
+            state.targetCrowdCount = parseInt(val, 10);
+            document.getElementById("crowdSliderLabel").textContent = `${state.targetCrowdCount} người`;
+            updateOnlineCounterUI();
+        };
+
+        function updateOnlineCounterUI() {
+            const realInRoom = state.remotePlayers.size + 1;
+            const total = state.targetCrowdCount + realInRoom;
+            document.getElementById("onlineCountDisplay").textContent = total;
+            document.getElementById("hudRoomCode").textContent = state.roomCode;
+            document.getElementById("hudRealRoomCount").textContent = `${realInRoom} thật`;
+        }
+
+        function addDonAndCalculateDPM(donAmount) {
+            let mult = 1;
+            VANG_MA_ITEMS.forEach(item => {
+                if (state.ownedVangMa.has(item.id) && item.bonusMult) {
+                    mult *= item.bonusMult;
+                }
+            });
+            // Check if Diêm Vương X3 KPI Đớn event is active
+            const isX3 = state.x3DonUntil > Date.now();
+            if (isX3) {
+                mult *= 3;
+            }
+            const finalDon = Math.round(donAmount * mult);
+            state.totalDon += finalDon;
+            const now = Date.now();
+            state.dpmHistory.push({ time: now, amount: finalDon });
+            // Keep last 60 seconds
+            state.dpmHistory = state.dpmHistory.filter(e => now - e.time <= 60000);
+            const currentDPM = state.dpmHistory.reduce((acc, cur) => acc + cur.amount, 0);
+
+            document.getElementById("hudTotalDon").textContent = formatCompactNumber(state.totalDon);
+            document.getElementById("hudDPM").textContent = formatCompactNumber(currentDPM) + "/ph";
+
+            // Spawn floating text over player
+            state.floatingTexts.push({
+                x: player.x,
+                y: player.y - 55,
+                text: `+${finalDon.toLocaleString("vi-VN")} ĐỚN${isX3 ? " (X3🔥)" : ""}!`,
+                color: isX3 ? "#fb923c" : "#facc15",
+                life: 45
+            });
+        }
+
+        // =====================================================================
+        // 8B. ROOM CODE MANAGEMENT, FRIEND ROSTER & DIÊM VƯƠNG LIVE EVENTS
+        // =====================================================================
+        window.openRoomModal = function() {
+            document.getElementById("modalCurrentRoomCode").textContent = state.roomCode;
+            document.getElementById("roomCodeInput").value = state.roomCode;
+            if (currentUser) {
+                document.getElementById("modalUserIdDisplay").textContent = currentUser.uid;
+            }
+            renderRoomRoster();
+            const modal = document.getElementById("roomModal");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        };
+
+        window.joinCustomRoom = function() {
+            const raw = document.getElementById("roomCodeInput").value.trim().toUpperCase();
+            const clean = raw.replace(/[^A-Z0-9-_]/g, "").slice(0, 20);
+            if (!clean) {
+                showToast("Vui lòng nhập Mã Phòng hợp lệ (chữ cái hoặc số)!", "red");
+                return;
+            }
+            joinRoomByCode(clean);
+        };
+
+        window.generateRandomRoom = function() {
+            const randNum = Math.floor(100 + Math.random() * 900);
+            const prefixes = ["DIANGUC", "VACDAU", "TANG19", "KHAUNGHIEP", "MINHTI", "AMPHU"];
+            const code = `${prefixes[Math.floor(Math.random() * prefixes.length)]}-${randNum}`;
+            joinRoomByCode(code);
+        };
+
+        window.joinRoomByCode = function(newCode) {
+            state.roomCode = newCode.toUpperCase();
+            state.remotePlayers.clear();
+            document.getElementById("modalCurrentRoomCode").textContent = state.roomCode;
+            document.getElementById("roomCodeInput").value = state.roomCode;
+            document.getElementById("broadcastRoomTarget").textContent = state.roomCode;
+
+            // Update URL query parameter without reloading page
+            try {
+                const newUrl = new URL(window.location.href);
+                newUrl.searchParams.set("room", state.roomCode);
+                window.history.replaceState({}, "", newUrl);
+            } catch (e) {
+                // Ignore inside restricted sandboxed iframes
+            }
+
+            updateOnlineCounterUI();
+            subscribeToRoomEvents(state.roomCode);
+            syncPlayerToCloud();
+            renderRoomRoster();
+            playSound("elevator");
+            showToast(`🚪 Đã chuyển sang Mã Phòng: ${state.roomCode}!`, "emerald");
+        };
+
+        window.copyRoomInvite = function() {
+            let shareUrl = window.location.href;
+            try {
+                const u = new URL(window.location.href);
+                u.searchParams.set("room", state.roomCode);
+                shareUrl = u.toString();
+            } catch (e) {}
+
+            const inviteText = `🔥 Tham gia ĐỊA NGỤC CORP (19 Tầng Địa Ngục) cùng mình!\n🔑 Mã Phòng: ${state.roomCode}\n👉 Link vào thẳng phòng: ${shareUrl}`;
+            const tempInput = document.createElement("textarea");
+            tempInput.value = inviteText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            playSound("stamp");
+            showToast(`📋 Đã copy Mã Phòng [${state.roomCode}] & Link mời bạn bè vào bộ nhớ tạm!`, "emerald");
+        };
+
+        function renderRoomRoster() {
+            const listEl = document.getElementById("roomRosterList");
+            if (!listEl) return;
+            listEl.innerHTML = "";
+
+            const allRealPlayers = [
+                {
+                    uid: player.id,
+                    name: player.name + " (Bạn)",
+                    title: player.title,
+                    zoneId: state.currentZoneId,
+                    totalDon: state.totalDon,
+                    isSelf: true
+                }
+            ];
+
+            state.remotePlayers.forEach((rp, uid) => {
+                allRealPlayers.push({
+                    uid: uid,
+                    name: rp.name || "Linh Hồn Online",
+                    title: rp.title || "Đồng Nghiệp Chịu Phạt",
+                    zoneId: rp.zoneId || 0,
+                    totalDon: rp.totalDon || 0,
+                    isSelf: false
+                });
+            });
+
+            document.getElementById("rosterCountText").textContent = allRealPlayers.length;
+
+            allRealPlayers.forEach((p) => {
+                const zName = ZONES[p.zoneId] ? ZONES[p.zoneId].shortName : `Tầng ${p.zoneId}`;
+                const row = document.createElement("div");
+                row.className = "bg-black/60 border border-amber-500/30 rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2";
+                row.innerHTML = `
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                            <span class="font-black text-xs sm:text-sm text-white">${p.name}</span>
+                            <span class="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded font-bold">${zName}</span>
+                        </div>
+                        <div class="text-[10px] text-stone-400 mt-0.5">
+                            ID: <code class="text-stone-300">${p.uid}</code> • KPI: <strong class="text-red-400">${(p.totalDon || 0).toLocaleString("vi-VN")} ĐỚN</strong>
+                        </div>
+                    </div>
+                    <div>
+                        ${
+                            p.isSelf
+                                ? `<span class="text-[11px] text-emerald-400 font-bold px-3 py-1 bg-emerald-950/60 rounded-lg border border-emerald-500/30">Đang điều khiển</span>`
+                                : `<button onclick="teleportToFriend(${p.zoneId}, '${p.name.replace(/'/g, "")}')" class="btn-gold text-black font-black text-xs px-3 py-1.5 rounded-xl flex items-center gap-1">
+                                    <i class="fa-solid fa-location-arrow"></i> Dịch chuyển tới
+                                   </button>`
+                        }
+                    </div>
+                `;
+                listEl.appendChild(row);
+            });
+        }
+
+        window.teleportToFriend = function(zoneId, friendName) {
+            closeModal("roomModal");
+            goToZone(zoneId);
+            showToast(`⚡ Đã dịch chuyển tới tầng của ${friendName}!`, "emerald");
+        };
+
+        window.openDiemVuongModal = function() {
+            document.getElementById("broadcastRoomTarget").textContent = state.roomCode;
+            const modal = document.getElementById("diemVuongModal");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        };
+
+        window.dismissBroadcastBanner = function() {
+            const b = document.getElementById("liveBroadcastBanner");
+            if (b) {
+                b.classList.add("hidden");
+                b.classList.remove("flex");
+            }
+        };
+
+        window.triggerRoomEvent = async function(eventType) {
+            const customText = document.getElementById("diemVuongBroadcastInput").value.trim();
+            const z = ZONES[state.currentZoneId];
+
+            let message = customText;
+            if (!message) {
+                if (eventType === "SUMMON_ALL") {
+                    message = `LỆNH TRIỆU TẬP KHẨN CẤP: Toàn bộ tội nhân phòng [${state.roomCode}] tập trung ngay về ${z.code} (${z.name}) theo lệnh của ${player.name}!`;
+                } else if (eventType === "X3_DON") {
+                    message = `🔥 GIỜ VÀNG ĐỊA NGỤC CORP: Chủ tịch ${player.name} vừa kích hoạt X3 KPI ĐỚN toàn phòng trong 60 giây! Chạy KPI ngay!`;
+                } else if (eventType === "VANG_MA_RAIN") {
+                    message = `💸 XẢ KHO VÀNG MÃ: ${player.name} vừa đốt lô hàng Xe SH, iPhone 18 & Biệt thự giấy xuống ${z.code}! Nhặt ngay kẻo lỡ!`;
+                } else if (eventType === "AUDIT_19") {
+                    message = `⚖️ KIỂM TOÁN KHẨU NGHIỆP ĐỘT XUẤT: Toàn bộ phòng chuyển về Tầng 19 để Phán Quan rà soát lịch sử nói xấu sau lưng!`;
+                } else {
+                    message = `📢 Sắc lệnh từ ${player.name}: Tất cả tội nhân tăng tốc độ chịu Đớn lên 200% KPI!`;
+                }
+            }
+
+            const eventPayload = {
+                eventId: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+                type: eventType,
+                senderName: player.name,
+                targetZoneId: eventType === "AUDIT_19" ? 19 : state.currentZoneId,
+                message: message,
+                timestamp: Date.now()
+            };
+
+            closeModal("diemVuongModal");
+            document.getElementById("diemVuongBroadcastInput").value = "";
+
+            // Apply immediately for host
+            state.lastProcessedEventId = eventPayload.eventId;
+            applyRoomEventLocally(eventPayload);
+
+            // Sync to Firestore so everyone in the same Room Code receives it in real time
+            if (db && currentUser) {
+                try {
+                    const roomDocRef = doc(db, "artifacts", appId, "public", "data", "hell_rooms", state.roomCode);
+                    await setDoc(roomDocRef, eventPayload);
+                } catch (e) {
+                    console.debug("Could not broadcast room event:", e);
+                }
+            }
+        };
+
+        function applyRoomEventLocally(ev) {
+            playSound("gong");
+            const banner = document.getElementById("liveBroadcastBanner");
+            const textEl = document.getElementById("liveBroadcastText");
+            if (banner && textEl) {
+                textEl.textContent = `[Phòng ${state.roomCode}] ${ev.message}`;
+                banner.classList.remove("hidden");
+                banner.classList.add("flex");
+            }
+            appendChatMessage(`👑 SẮC LỆNH DIÊM VƯƠNG (${ev.senderName})`, ev.message, true);
+
+            if (ev.type === "SUMMON_ALL") {
+                if (typeof ev.targetZoneId === "number" && ev.targetZoneId !== state.currentZoneId) {
+                    goToZone(ev.targetZoneId);
+                }
+                summonCrowdHere();
+            } else if (ev.type === "X3_DON") {
+                state.x3DonUntil = Date.now() + 60000;
+                showToast("🔥 GIỜ VÀNG X3 KPI ĐỚN ĐÃ KÍCH HOẠT TRONG 60 GIÂY!", "amber");
+            } else if (ev.type === "VANG_MA_RAIN") {
+                spawnPaperOfferingsRain(18);
+                showToast("💸 Mưa Vàng Mã đang rơi khắp sàn! Hãy di chuyển hoặc click vào để nhặt!", "emerald");
+            } else if (ev.type === "AUDIT_19") {
+                goToZone(19);
+                openPhanQuanModal();
+                showToast("⚖️ Kiểm toán Khẩu Nghiệp đột xuất tại Tầng 19!", "red");
+            } else {
+                showToast(`📢 ${ev.message}`, "amber");
+            }
+        }
+
+        function spawnPaperOfferingsRain(count = 16) {
+            const offeringTypes = [
+                { emoji: "🏍️", label: "SH 350i Giấy (+120 Xu)", coins: 120, don: 15000 },
+                { emoji: "📱", label: "iPhone 18 Giấy (+90 Xu)", coins: 90, don: 10000 },
+                { emoji: "🏰", label: "Biệt Thự Giấy (+200 Xu)", coins: 200, don: 25000 },
+                { emoji: "💃", label: "Người Yêu Giấy (+150 Xu)", coins: 150, don: 18888 },
+                { emoji: "💵", label: "Cọc Đô La Âm Phủ (+80 Xu)", coins: 80, don: 8000 }
+            ];
+            for (let i = 0; i < count; i++) {
+                const t = offeringTypes[i % offeringTypes.length];
+                const tx = 130 + Math.random() * (ZONE_WIDTH - 260);
+                const ty = 170 + Math.random() * (ZONE_HEIGHT - 260);
+                state.fallingOfferings.push({
+                    x: tx,
+                    y: ty - 220 - Math.random() * 180,
+                    targetY: ty,
+                    vy: 2.8 + Math.random() * 1.8,
+                    emoji: t.emoji,
+                    label: t.label,
+                    coins: t.coins,
+                    don: t.don,
+                    life: 1600 // ~26 seconds
+                });
+            }
+        }
+
+        function collectPaperOffering(index) {
+            const item = state.fallingOfferings[index];
+            if (!item) return;
+            state.fallingOfferings.splice(index, 1);
+            playSound("stamp");
+            state.coins += item.coins;
+            addDonAndCalculateDPM(item.don);
+            updateHUDStats();
+            state.floatingTexts.push({
+                x: item.x,
+                y: item.y - 20,
+                text: `Nhặt ${item.emoji} +${item.coins} Xu!`,
+                color: "#4ade80",
+                life: 45
+            });
+        }
+
+        function formatCompactNumber(n) {
+            if (n >= 1000000) return (n / 1000000).toFixed(2) + "M";
+            if (n >= 1000) return (n / 1000).toFixed(1) + "K";
+            return n.toString();
+        }
+
+        // =====================================================================
+        // 9. INTERACTIVE MINI-GAME MODAL FOR EXPERIENCING EACH FLOOR'S PUNISHMENT
+        // =====================================================================
+        let miniAnimId = null;
+        let miniTick = 0;
+
+        window.triggerZonePunishment = function() {
+            const z = ZONES[state.currentZoneId];
+            if (z.id === 19) {
+                openPhanQuanModal();
+                return;
+            }
+            if (z.id === 20) {
+                openPassportModal();
+                return;
+            }
+
+            state.miniTortureProgress = 0;
+            document.getElementById("punishFloorBadge").textContent = z.code;
+            document.getElementById("punishTitle").textContent = `${z.name} — ${z.punishmentName}`;
+            document.getElementById("punishSinDesc").textContent = z.sin;
+            document.getElementById("punishDonRate").textContent = `${z.donRate.toLocaleString("vi-VN")} ĐỚN / nhịp`;
+            document.getElementById("punishOfficer").textContent = `${z.npcName} (${z.npcEmail})`;
+            document.getElementById("miniProgressBar").style.width = "0%";
+            document.getElementById("miniProgressText").textContent = "0%";
+
+            const modal = document.getElementById("punishmentModal");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+
+            startMiniTortureLoop();
+        };
+
+        function startMiniTortureLoop() {
+            if (miniAnimId) cancelAnimationFrame(miniAnimId);
+            const mc = document.getElementById("miniTortureCanvas");
+            const mctx = mc.getContext("2d");
+
+            function loop() {
+                miniTick++;
+                const z = ZONES[state.currentZoneId];
+                mctx.clearRect(0, 0, mc.width, mc.height);
+
+                // Background
+                const g = mctx.createLinearGradient(0, 0, 0, mc.height);
+                g.addColorStop(0, "#09050c");
+                g.addColorStop(1, z.themeColor);
+                mctx.fillStyle = g;
+                mctx.fillRect(0, 0, mc.width, mc.height);
+
+                // Draw Apparatus & Player inside it
+                drawZoneApparatus(mctx, z, mc.width / 2, mc.height / 2 + 25, miniTick);
+                drawArticulatedCharacter(mctx, mc.width / 2, mc.height / 2 + 12, {
+                    name: player.name,
+                    color: player.color,
+                    skinColor: player.skinColor,
+                    facing: 1,
+                    walkCycle: miniTick * 0.35,
+                    isPunished: true,
+                    chatText: state.miniTortureProgress > 50 ? "Á á ĐỚN quá anh Ngục Tốt ơi!!" : "Đang chạy KPI Đớn!",
+                    scale: 1.25
+                });
+
+                // Officer supervising on right
+                drawArticulatedCharacter(mctx, mc.width / 2 + 165, mc.height / 2 + 25, {
+                    name: z.npcName,
+                    color: "#7c2d12",
+                    facing: -1,
+                    walkCycle: miniTick * 0.08,
+                    isNPC: true,
+                    npcLook: z.npcLook,
+                    scale: 1.15
+                });
+
+                if (!document.getElementById("punishmentModal").classList.contains("hidden")) {
+                    miniAnimId = requestAnimationFrame(loop);
+                }
+            }
+            loop();
+        }
+
+        window.stepMiniTorture = function() {
+            const z = ZONES[state.currentZoneId];
+            playSound("whip");
+            const stepGain = state.ownedVangMa.has("villa") ? 34 : 20;
+            state.miniTortureProgress = Math.min(100, state.miniTortureProgress + stepGain);
+
+            addDonAndCalculateDPM(z.donRate || 500);
+            state.coins += state.ownedVangMa.has("iphone") ? 35 : 25;
+            state.karma = Math.max(0, state.karma - 5);
+            updateHUDStats();
+
+            document.getElementById("miniProgressBar").style.width = `${state.miniTortureProgress}%`;
+            document.getElementById("miniProgressText").textContent = `${state.miniTortureProgress}%`;
+
+            if (state.miniTortureProgress >= 100) {
+                state.completedZones.add(z.id);
+                document.getElementById("passportCount").textContent = state.completedZones.size;
+                playSound("stamp");
+                showToast(`✅ Đã hoàn thành KPI Đớn tại ${z.code}! Đã đóng dấu vào Sổ Sinh Tử!`, "emerald");
+                setTimeout(() => {
+                    closeModal("punishmentModal");
+                }, 450);
+            }
+        };
+
+        // =====================================================================
+        // 10. TẦNG 19: PHÁN QUAN AI (GEMINI API + INSTANT SMART FALLBACK) & QUIZ
+        // =====================================================================
+        const QUIZ_QUESTIONS = [
+            {
+                q: "Câu 1 (Câu đố Cổng Địa Ngục Corp từ Minh Ti): Khi mới bước vào cổng check-in, Hắc Bạch Vô Thường kể câu chuyện hài nhạt nhẽo, phản ứng nào giúp bạn KHÔNG bị cộng thêm Đớn?",
+                options: [
+                    { text: "Cười ha hả nịnh Hắc Bạch Vô Thường", karmaDelta: +30, reply: "Cười vô duyên nơi công cộng! Phán Quan ghi sổ +30 Nghiệp và mời xuống Tầng 19!" },
+                    { text: "Giữ thái độ nghiêm túc, xuất trình QR Sổ Sinh Tử đúng quy trình", karmaDelta: -25, reply: "Chuẩn tác phong công dân gương mẫu của Địa Ngục Corp! Được giảm 25 Nghiệp!" },
+                    { text: "Quay sang nói xấu câu đố nhạt với người bên cạnh", karmaDelta: +50, reply: "Bắt quả tang nói xấu sau lưng ngay tại cổng! Chuyển thẳng xuống Tầng 19!" }
+                ]
+            },
+            {
+                q: "Câu 2 (Đơn vị đo lường KPI): Theo chuẩn ISO của Địa Ngục Corp, hình phạt 'Roi Da' và 'Vạc Dầu Sôi Tầng 9' chênh lệch nhau bao nhiêu ĐỚN?",
+                options: [
+                    { text: "Roi da = 20 Đớn | Vạc dầu sôi = 1.000.000 Đớn ('Yêu thương khách hàng - Cho vô chảo dầu')", karmaDelta: -30, reply: "Chính xác! Nắm rất rõ biểu giá KPI Đớn của Tập đoàn! Giảm 30 Nghiệp!" },
+                    { text: "Hai cái đau như nhau, đều 100 Đớn", karmaDelta: +20, reply: "Sai kiến thức cơ bản! Xuống Tầng 9 thử Vạc Dầu 1 triệu Đớn là biết liền!" }
+                ]
+            },
+            {
+                q: "Câu 3 (Kiểm tra Khẩu Nghiệp Công Sở): Khi đồng nghiệp hoặc bạn bè gặp chuyện xui rủi, bạn thường làm gì lúc còn trên dương gian?",
+                options: [
+                    { text: "Chụp màn hình gửi vào group chat riêng để bàn tán rôm rả", karmaDelta: +60, reply: "Án điểm Tầng 19! Gõ bàn phím gai sắt 50.000 Đớn không nói nhiều!" },
+                    { text: "Giúp đỡ hoặc giữ im lặng, không thêu dệt thêm bớt", karmaDelta: -35, reply: "Khẩu nghiệp bằng 0! Phán Quan đóng dấu khen thưởng -35 Nghiệp!" }
+                ]
+            },
+            {
+                q: "Câu 4 (Email Liên Hệ Ban Điều Phối): Khi cần khiếu nại hoặc xin điều phối tầng tại Địa Ngục Corp, bạn gửi email cho Đầu Trâu Mặt Ngựa qua địa chỉ nào?",
+                options: [
+                    { text: "trauvuive@dianguccorp.com và ngualen@dianguccorp.com", karmaDelta: -30, reply: "Quá chuẩn bài! Đầu Trâu Mặt Ngựa duyệt giảm ngay 30 Nghiệp!" },
+                    { text: "cskh@amphu.vn", karmaDelta: +15, reply: "Sai địa chỉ email nội bộ rồi, cộng 15 Nghiệp vì không đọc kỹ onboarding!" }
+                ]
+            }
+        ];
+
+        window.openPhanQuanModal = function() {
+            const modal = document.getElementById("phanQuanModal");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+            renderPhanQuanQuiz();
+        };
+
+        window.switchPhanQuanTab = function(tab) {
+            const cTab = document.getElementById("phanQuanTabConfess");
+            const qTab = document.getElementById("phanQuanTabQuiz");
+            const cBtn = document.getElementById("tabBtnConfess");
+            const qBtn = document.getElementById("tabBtnQuiz");
+
+            if (tab === "confess") {
+                cTab.classList.remove("hidden");
+                qTab.classList.add("hidden");
+                cBtn.className = "btn-gold text-black font-black text-xs sm:text-sm px-4 py-2 rounded-xl flex items-center gap-2";
+                qBtn.className = "bg-stone-800 hover:bg-stone-700 text-stone-200 font-bold text-xs sm:text-sm px-4 py-2 rounded-xl flex items-center gap-2";
+            } else {
+                cTab.classList.add("hidden");
+                qTab.classList.remove("hidden");
+                qBtn.className = "btn-gold text-black font-black text-xs sm:text-sm px-4 py-2 rounded-xl flex items-center gap-2";
+                cBtn.className = "bg-stone-800 hover:bg-stone-700 text-stone-200 font-bold text-xs sm:text-sm px-4 py-2 rounded-xl flex items-center gap-2";
+            }
+        };
+
+        window.setConfessionSample = function(text) {
+            document.getElementById("confessionInput").value = text;
+        };
+
+        window.submitConfessionToPhanQuan = async function() {
+            const inputEl = document.getElementById("confessionInput");
+            const rawText = inputEl.value.trim();
+            if (!rawText) {
+                showToast("Hãy nhập lời thú tội hoặc chọn một mẫu có sẵn để Phán Quan tra cứu Sổ Sinh Tử!", "amber");
+                return;
+            }
+
+            const btn = document.getElementById("judgeConfessBtn");
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ĐANG TRA CỨU SỔ SINH TỬ BIG DATA...`;
+
+            let verdict = null;
+
+            // Try Gemini API for ultra-witty personalized Phán Quan judgment, with instant fallback
+            try {
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+                const systemPrompt = `Bạn là Phán Quan Tối Cao (Trưởng Ban Pháp Chế của tập đoàn Địa Ngục Corp - Thương Hiệu Dưới Lòng Đất, triết lý "Đã phán là không có oan!"). Người chơi đang ở Tầng 19 (Ngục Khẩu Nghiệp & Nói Xấu Sau Lưng). Hãy phân tích lời thú tội của người chơi một cách hài hước, duyên dáng theo phong cách công sở âm phủ của Minh Ti (dùng từ khóa: KPI Đớn, DPM, Sổ Sinh Tử Data, Đầu Trâu Mặt Ngựa, Vạc Dầu). Trả về JSON đúng cấu trúc.`;
+
+                const payload = {
+                    contents: [{ parts: [{ text: `Lời thú tội của tội nhân "${player.name}": "${rawText}"` }] }],
+                    systemInstruction: { parts: [{ text: systemPrompt }] },
+                    generationConfig: {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                            type: "OBJECT",
+                            properties: {
+                                crimeLevel: { type: "STRING" },
+                                analysis: { type: "STRING" },
+                                punishment: { type: "STRING" },
+                                donAmount: { type: "INTEGER" },
+                                karmaReduced: { type: "INTEGER" }
+                            },
+                            propertyOrdering: ["crimeLevel", "analysis", "punishment", "donAmount", "karmaReduced"]
+                        }
+                    }
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                const jsonText = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (jsonText) {
+                    verdict = JSON.parse(jsonText);
+                }
+            } catch (err) {
+                // Fallback handled below
+            }
+
+            if (!verdict) {
+                // Smart Contextual Local Fallback Judgment
+                const lower = rawText.toLowerCase();
+                if (lower.includes("sếp") || lower.includes("group") || lower.includes("đồng nghiệp") || lower.includes("nói xấu")) {
+                    verdict = {
+                        crimeLevel: "KHẨU NGHIỆP CÔNG SỞ CẤP S+",
+                        analysis: `Sổ Sinh Tử Cloud vừa trích xuất 4.820 tin nhắn của "${player.name}" trong group chat nói xấu sau lưng! Đã phán là không có oan! Vì ngươi dám tự thú thành khẩn nên Ban Pháp Chế giảm 45 điểm Nghiệp, nhưng phải chịu đủ KPI Đớn tại Tầng 19!`,
+                        punishment: "Nghe Loa Phóng Thanh 50.000W Phát Lại Lời Nói Xấu + Gõ Bàn Phím Gai",
+                        donAmount: 88888,
+                        karmaReduced: 45
+                    };
+                } else if (lower.includes("phím") || lower.includes("mạng") || lower.includes("toxic") || lower.includes("drama")) {
+                    verdict = {
+                        crimeLevel: "ANH HÙNG BÀN PHÍM CẤP ĐỘ VIP",
+                        analysis: `Hệ thống Nghiệt Kính Đài 8K đã lưu toàn bộ bình luận dạo của ngươi lúc 2h sáng! Tốc độ gõ phím tạo nghiệp đạt 120 từ/phút, nay quy đổi thành 99.000 ĐỚN tại Tầng 19!`,
+                        punishment: "Gõ Bàn Phím Cơ Gai Sắt Nung Đỏ 1000 Lần",
+                        donAmount: 99000,
+                        karmaReduced: 50
+                    };
+                } else {
+                    verdict = {
+                        crimeLevel: "NGHIỆP CHƯỚNG ĐẶC BIỆT TẦNG 19",
+                        analysis: `Phán Quan đã đối chiếu lời khai "${rawText}" với Sổ Sinh Tử Big Data. Đã phán là không có oan! Ghi nhận thái độ thành khẩn khai báo, khấu trừ 40 điểm Nghiệp Chướng sau khi hoàn thành KPI Đớn!`,
+                        punishment: "Chạy Báo Cáo KPI Cho Thập Điện Diêm Vương & Ngồi Ghế Gai Tầng 19",
+                        donAmount: 66666,
+                        karmaReduced: 40
+                    };
+                }
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = `<i class="fa-solid fa-gavel"></i> TRA CỨU SỔ SINH TỬ & TUYÊN ÁN TẦNG 19`;
+
+            // Display Verdict Card
+            document.getElementById("verdictCard").classList.remove("hidden");
+            document.getElementById("verdictCrimeLevel").textContent = verdict.crimeLevel;
+            document.getElementById("verdictAnalysis").textContent = verdict.analysis;
+            document.getElementById("verdictPunishment").textContent = verdict.punishment;
+            document.getElementById("verdictDonAmount").textContent = `+${(verdict.donAmount || 66666).toLocaleString("vi-VN")} ĐỚN`;
+            document.getElementById("verdictKarmaDelta").textContent = `Giảm -${verdict.karmaReduced || 40} Nghiệp (Thành khẩn)`;
+
+            state.lastVerdict = verdict;
+            playSound("gong");
+        };
+
+        window.executeFloor19Sentence = function() {
+            const v = state.lastVerdict || { donAmount: 88888, karmaReduced: 45, punishment: "Gõ Bàn Phím Gai Tầng 19" };
+            closeModal("phanQuanModal");
+            if (state.currentZoneId !== 19) {
+                goToZone(19);
+            }
+            addDonAndCalculateDPM(v.donAmount);
+            state.karma = Math.max(0, state.karma - (v.karmaReduced || 40));
+            state.coins += 120;
+            state.completedZones.add(19);
+            document.getElementById("passportCount").textContent = state.completedZones.size;
+            player.chatText = `Đã chấp hành án Tầng 19: ${v.punishment}! Đã phán là không có oan!`;
+            player.chatTimer = 320;
+            updateHUDStats();
+            playSound("stamp");
+            showToast(`⚖️ Đã chấp hành án Tầng 19! Nhận +${v.donAmount.toLocaleString("vi-VN")} ĐỚN & đóng dấu Tầng 19!`, "emerald");
+        };
+
+        function renderPhanQuanQuiz() {
+            const container = document.getElementById("quizContainer");
+            container.innerHTML = "";
+            QUIZ_QUESTIONS.forEach((item, idx) => {
+                const answered = state.activeQuizAnswers[idx];
+                const card = document.createElement("div");
+                card.className = "bg-black/50 border border-amber-500/30 rounded-2xl p-3.5 space-y-2";
+                let btnsHtml = item.options.map((opt, oIdx) => {
+                    const isSelected = answered && answered.oIdx === oIdx;
+                    return `<button onclick="answerQuiz(${idx}, ${oIdx})" class="w-full text-left text-xs sm:text-sm p-2.5 rounded-xl border transition ${
+                        isSelected
+                            ? "bg-amber-500/20 border-amber-400 text-amber-200 font-bold"
+                            : "bg-stone-900/80 hover:bg-stone-800 border-white/10 text-stone-200"
+                    }">
+                        <i class="fa-regular ${isSelected ? "fa-circle-check text-amber-400" : "fa-circle"} mr-1.5"></i>${opt.text}
+                    </button>`;
+                }).join("");
+
+                card.innerHTML = `
+                    <div class="font-bold text-amber-300 text-xs sm:text-sm">${item.q}</div>
+                    <div class="space-y-1.5">${btnsHtml}</div>
+                    ${answered ? `<div class="text-xs font-semibold p-2 rounded-lg bg-purple-950/70 border border-purple-400/40 text-purple-200 mt-1">⚖️ Phán Quan: "${answered.reply}"</div>` : ""}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        window.answerQuiz = function(qIdx, oIdx) {
+            if (state.activeQuizAnswers[qIdx]) return;
+            const opt = QUIZ_QUESTIONS[qIdx].options[oIdx];
+            state.activeQuizAnswers[qIdx] = { oIdx, reply: opt.reply };
+            state.karma = Math.max(0, state.karma + opt.karmaDelta);
+            if (opt.karmaDelta < 0) {
+                state.coins += 50;
+                playSound("stamp");
+            } else {
+                addDonAndCalculateDPM(5000);
+                playSound("whip");
+            }
+            updateHUDStats();
+            renderPhanQuanQuiz();
+        };
+
+        // =====================================================================
+        // 11. ELEVATOR, VANG MA SHOP, PASSPORT & MẠNH BÀ RESET MODALS
+        // =====================================================================
+        window.openElevatorModal = function() {
+            const grid = document.getElementById("elevatorGrid");
+            grid.innerHTML = "";
+            ZONES.forEach((z) => {
+                const isCurrent = z.id === state.currentZoneId;
+                const isDone = state.completedZones.has(z.id);
+                const soulCount = countSoulsInZone(z.id);
+
+                const btn = document.createElement("div");
+                btn.className = `p-3.5 rounded-2xl border cursor-pointer transition flex flex-col justify-between gap-2 ${
+                    isCurrent
+                        ? "bg-gradient-to-br from-red-900/90 to-amber-950/90 border-amber-400 shadow-lg"
+                        : "bg-black/60 hover:bg-stone-900/90 border-red-500/30 hover:border-amber-400/60"
+                }`;
+                btn.onclick = () => goToZone(z.id);
+                btn.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between gap-1">
+                            <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded ${z.id === 19 ? "bg-purple-600 text-white" : "bg-amber-500/20 text-amber-300 border border-amber-500/40"}">${z.code}</span>
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-[10px] text-emerald-400 font-semibold"><i class="fa-solid fa-user-group mr-0.5"></i>${soulCount}</span>
+                                ${isDone ? `<span class="text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded font-bold">✓ Đã qua</span>` : ""}
+                            </div>
+                        </div>
+                        <div class="font-black text-sm text-white mt-1.5">${z.name}</div>
+                        <p class="text-[11px] text-stone-300 line-clamp-2 mt-0.5">${z.sin}</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-white/10 text-[11px]">
+                        <span class="text-red-400 font-bold"><i class="fa-solid fa-bolt mr-1"></i>${z.donRate.toLocaleString("vi-VN")} Đớn</span>
+                        <span class="text-amber-300 font-bold">Đi tới tầng <i class="fa-solid fa-arrow-right ml-0.5"></i></span>
+                    </div>
+                `;
+                grid.appendChild(btn);
+            });
+
+            const modal = document.getElementById("elevatorModal");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        };
+
+        window.openVangMaModal = function() {
+            const grid = document.getElementById("vangMaGrid");
+            grid.innerHTML = "";
+            VANG_MA_ITEMS.forEach((item) => {
+                const owned = state.ownedVangMa.has(item.id);
+                const card = document.createElement("div");
+                card.className = "bg-black/60 border border-amber-500/30 rounded-2xl p-4 flex flex-col justify-between gap-3";
+                card.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl shrink-0" style="background:${item.color}22; color:${item.color}; border:1px solid ${item.color}">
+                            <i class="fa-solid ${item.icon}"></i>
+                        </div>
+                        <div>
+                            <div class="font-black text-sm text-white">${item.name}</div>
+                            <p class="text-xs text-stone-300 mt-1 leading-relaxed">${item.desc}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-white/10">
+                        <span class="text-xs font-black text-amber-400"><i class="fa-solid fa-coins mr-1"></i>${item.price} Xu Âm Phủ</span>
+                        ${
+                            owned
+                                ? `<span class="text-xs bg-emerald-600/30 border border-emerald-400 text-emerald-300 px-3 py-1 rounded-xl font-bold">✓ Đã đốt & Trang bị</span>`
+                                : `<button onclick="buyVangMa('${item.id}')" class="btn-gold text-black font-black text-xs px-3.5 py-1.5 rounded-xl">🔥 Đốt Nhận Ngay</button>`
+                        }
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            const modal = document.getElementById("vangMaModal");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        };
+
+        window.buyVangMa = function(itemId) {
+            const item = VANG_MA_ITEMS.find(i => i.id === itemId);
+            if (!item || state.ownedVangMa.has(itemId)) return;
+            if (state.coins < item.price) {
+                showToast("Không đủ Xu Âm Phủ! Hãy trải nghiệm chịu Đớn tại các tầng để nhận thêm Xu!", "red");
+                return;
+            }
+            state.coins -= item.price;
+            state.ownedVangMa.add(itemId);
+            if (itemId === "villa") {
+                player.title = "Đại Gia Vàng Mã Âm Phủ";
+            }
+            playSound("stamp");
+            updateHUDStats();
+            openVangMaModal();
+            showToast(`🔥 Đã đốt & nhận thành công ${item.name}!`, "emerald");
+        };
+
+        window.openPassportModal = function() {
+            const grid = document.getElementById("passportGrid");
+            grid.innerHTML = "";
+            ZONES.filter(z => z.id >= 1 && z.id <= 19).forEach(z => {
+                const done = state.completedZones.has(z.id);
+                const cell = document.createElement("div");
+                cell.className = `p-2.5 rounded-xl border text-center cursor-pointer transition ${
+                    done
+                        ? "bg-emerald-950/60 border-emerald-400 text-emerald-200"
+                        : "bg-black/50 border-white/10 text-stone-400 hover:border-amber-400/50"
+                }`;
+                cell.onclick = () => {
+                    closeModal("passportModal");
+                    goToZone(z.id);
+                };
+                cell.innerHTML = `
+                    <div class="text-[10px] font-black uppercase">${z.code}</div>
+                    <div class="text-xs font-bold text-white truncate mt-0.5">${z.shortName}</div>
+                    <div class="mt-1.5 text-[11px] font-black ${done ? "text-emerald-400" : "text-stone-500"}">
+                        ${done ? "💮 ĐÃ ĐÓNG DẤU" : "Chưa qua"}
+                    </div>
+                `;
+                grid.appendChild(cell);
+            });
+            const modal = document.getElementById("passportModal");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        };
+
+        window.drinkManhBaSoup = function() {
+            closeModal("passportModal");
+            goToZone(20);
+            state.karma = 0;
+            player.title = "Linh Hồn Đã Format Thẻ Nhớ";
+            player.chatText = "Format thẻ nhớ rồi mình thở nhé — Nhớ chết liền! Tạm biệt Địa Ngục Corp!";
+            player.chatTimer = 380;
+            updateHUDStats();
+            playSound("gong");
+            showToast("🥣 Bạn đã uống Canh Mạnh Bà! Nghiệp chướng về 0 — Đủ điều kiện Đầu Thai VIP!", "emerald");
+        };
+
+        window.openStandupLoreModal = function() {
+            const modal = document.getElementById("standupLoreModal");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        };
+
+        window.openProfileModal = function() {
+            document.getElementById("profileNameInput").value = player.name;
+            const modal = document.getElementById("profileModal");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        };
+
+        window.setPlayerColor = function(c) {
+            player.color = c;
+        };
+
+        window.savePlayerProfile = function() {
+            const val = document.getElementById("profileNameInput").value.trim();
+            if (val) player.name = val;
+            document.getElementById("hudPlayerName").textContent = player.name;
+            closeModal("profileModal");
+            syncPlayerToCloud();
+            showToast("Đã cập nhật hồ sơ tội nhân!", "emerald");
+        };
+
+        window.closeModal = function(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.add("hidden");
+                el.classList.remove("flex");
+            }
+        };
+
+        window.talkToNearestNPC = function() {
+            const z = ZONES[state.currentZoneId];
+            if (z.id === 19) {
+                openPhanQuanModal();
+                return;
+            }
+            if (z.id === 20) {
+                openPassportModal();
+                return;
+            }
+            playSound("elevator");
+            showToast(`💬 ${z.npcName}: "${z.npcQuote}"`, "amber");
+            appendChatMessage(z.npcName, z.npcQuote, true);
+        };
+
+        function updateHUDStats() {
+            document.getElementById("hudKarma").textContent = state.karma;
+            document.getElementById("hudCoins").textContent = state.coins.toLocaleString("vi-VN");
+            document.getElementById("hudTitleBadge").textContent = player.title;
+        }
+
+        // =====================================================================
+        // 12. LIVE CHAT & TOAST SYSTEM
+        // =====================================================================
+        function appendChatMessage(sender, text, isOfficial = false) {
+            const box = document.getElementById("chatMessages");
+            if (!box) return;
+            const div = document.createElement("div");
+            div.className = isOfficial
+                ? "bg-amber-500/15 border border-amber-500/40 rounded-lg p-1.5 text-amber-200"
+                : "bg-black/40 rounded-lg px-2 py-1 text-stone-200";
+            div.innerHTML = `<span class="font-bold ${isOfficial ? "text-amber-400" : "text-red-400"}">${sender}:</span> ${text}`;
+            box.appendChild(div);
+            while (box.children.length > 30) {
+                box.removeChild(box.firstChild);
+            }
+            box.scrollTop = box.scrollHeight;
+        }
+
+        window.sendPlayerChat = function(e) {
+            e.preventDefault();
+            const inp = document.getElementById("chatInput");
+            const txt = inp.value.trim();
+            if (!txt) return;
+            player.chatText = txt;
+            player.chatTimer = 280;
+            appendChatMessage(player.name, txt, false);
+            inp.value = "";
+            syncPlayerToCloud();
+        };
+
+        // Periodic simulated chat feed from the 450 online souls
+        setInterval(() => {
+            const randomSoul = crowdSouls[Math.floor(Math.random() * state.targetCrowdCount)];
+            const msg = FUNNY_CHATS[Math.floor(Math.random() * FUNNY_CHATS.length)];
+            if (randomSoul) {
+                appendChatMessage(`[Tầng ${randomSoul.zoneId}] ${randomSoul.name}`, msg, false);
+            }
+        }, 4500);
+
+        window.toggleSound = function() {
+            state.soundEnabled = !state.soundEnabled;
+            const btn = document.getElementById("soundBtn");
+            btn.innerHTML = state.soundEnabled
+                ? `<i class="fa-solid fa-volume-high"></i>`
+                : `<i class="fa-solid fa-volume-xmark text-stone-500"></i>`;
+        };
+
+        function showToast(msg, color = "amber") {
+            const container = document.getElementById("toastContainer");
+            const toast = document.createElement("div");
+            const borderMap = {
+                amber: "border-amber-400 text-amber-200",
+                emerald: "border-emerald-400 text-emerald-200",
+                red: "border-red-500 text-red-200"
+            };
+            toast.className = `hell-glass px-4 py-2 rounded-2xl border-2 ${borderMap[color] || borderMap.amber} text-xs sm:text-sm font-bold shadow-2xl transition-all duration-300`;
+            toast.textContent = msg;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = "0";
+                setTimeout(() => toast.remove(), 300);
+            }, 3400);
+        }
+
+        // =====================================================================
+        // 13. INPUT LISTENERS (KEYBOARD, MOUSE CLICK-TO-MOVE, MINIMAP CLICK)
+        // =====================================================================
+        window.addEventListener("keydown", (e) => {
+            if (document.activeElement && ["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) return;
+            state.keys[e.code] = true;
+            if (e.code === "KeyE") {
+                triggerZonePunishment();
+            } else if (e.code === "KeyF") {
+                talkToNearestNPC();
+            } else if (e.code === "Space") {
+                if (!document.getElementById("punishmentModal").classList.contains("hidden")) {
+                    e.preventDefault();
+                    stepMiniTorture();
+                }
+            }
+        });
+
+        window.addEventListener("keyup", (e) => {
+            state.keys[e.code] = false;
+        });
+
+        canvas.addEventListener("pointerdown", (e) => {
+            ensureAudio();
+            const worldX = e.clientX + state.camera.x;
+            const worldY = e.clientY + state.camera.y;
+
+            // Check if player clicked on a falling Vàng Mã offering
+            for (let i = state.fallingOfferings.length - 1; i >= 0; i--) {
+                const item = state.fallingOfferings[i];
+                if (Math.hypot(worldX - item.x, worldY - item.y) < 42) {
+                    collectPaperOffering(i);
+                    return;
+                }
+            }
+
+            // Check if player clicked near the central torture apparatus
+            if (Math.hypot(worldX - ZONE_WIDTH / 2, worldY - (ZONE_HEIGHT / 2 - 10)) < 110) {
+                triggerZonePunishment();
+                return;
+            }
+            // Check if player clicked near the Floor Officer NPC
+            if (Math.hypot(worldX - (ZONE_WIDTH / 2 + 190), worldY - (ZONE_HEIGHT / 2 - 20)) < 55) {
+                talkToNearestNPC();
+                return;
+            }
+
+            state.mouseTarget = {
+                x: Math.max(60, Math.min(ZONE_WIDTH - 60, worldX)),
+                y: Math.max(120, Math.min(ZONE_HEIGHT - 65, worldY))
+            };
+        });
+
+        minimapCanvas.addEventListener("click", (e) => {
+            const rect = minimapCanvas.getBoundingClientRect();
+            const clickY = e.clientY - rect.top;
+            const clickX = e.clientX - rect.left;
+            if (clickY > rect.height - 18) {
+                const zIdx = Math.floor((clickX / rect.width) * ZONES.length);
+                goToZone(zIdx);
+            } else {
+                openElevatorModal();
+            }
+        });
+
+        // =====================================================================
+        // 14. INITIALIZE & START MAIN GAME LOOP
+        // =====================================================================
+        window.onload = function() {
+            document.getElementById("hudPlayerName").textContent = player.name;
+            document.getElementById("hudRoomCode").textContent = state.roomCode;
+            appendChatMessage("Hệ Thống Địa Ngục Corp", `Chào mừng đến Mã Phòng [${state.roomCode}]! Bấm 'Mã Phòng & Mời Bạn' để copy link rủ bạn bè vào chung phòng.`, true);
+            appendChatMessage("Phán Quan (Tầng 19)", "Chủ phòng có thể bấm 'Lệnh Diêm Vương (Host)' bên trái để triệu tập cả phòng, bật X3 KPI Đớn hoặc xả mưa Vàng Mã!", true);
+
+            initFirebaseMultiplayer();
+            goToZone(0);
+
+            function mainLoop() {
+                updateGame();
+                renderGame();
+                requestAnimationFrame(mainLoop);
+            }
+            mainLoop();
+        };
+    </script>
+</body>
+</html>
